@@ -4,64 +4,62 @@
 <html lang="am">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#075e54">
 <title>DHPEW | Digital Health Post Ethiopia Werqa</title>
 <style>
-:root{--green:#075e54;--green2:#0b806e;--ink:#18312d;--muted:#657873;--bg:#f3f7f5;--line:#dce8e3;--red:#b42318}
+:root{--g:#075e54;--g2:#0b806e;--ink:#18312d;--muted:#657873;--bg:#f3f7f5;--line:#dce8e3;--red:#b42318}
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}
-header{background:linear-gradient(120deg,#064e46,#0c8874);color:white;padding:20px 16px}
-.top{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.brand{display:flex;gap:12px;align-items:center}
-.logo{width:48px;height:48px;border-radius:14px;background:#ffffff20;display:grid;place-items:center;font-size:27px}
+header{background:linear-gradient(120deg,#064e46,#0c8874);color:white;padding:18px}
+.top,main{max-width:1100px;margin:auto}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:14px;background:#ffffff25;display:grid;place-items:center;font-size:27px}
 h1{font-size:20px;margin:0 0 5px}
-.sub{font-size:12px}
-.status{font-size:12px;padding:8px 11px;border-radius:30px;background:#ffffff20}
-main{max-width:1100px;margin:20px auto;padding:0 14px 40px}
-.hero,.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:19px;margin-bottom:17px}
-.hero h2,.panel h2{color:var(--green)}
-.hero p,.hint{color:var(--muted);line-height:1.7;font-size:14px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}
-.stat{background:white;border:1px solid var(--line);border-radius:14px;padding:13px}
-.stat b{font-size:23px;color:var(--green);display:block}
+.sub,.status{font-size:12px}
+.status{background:#ffffff25;padding:9px;border-radius:20px}
+main{padding:18px 13px 40px}
+.hero,.panel,.stat{background:white;border:1px solid var(--line);border-radius:16px;padding:17px;margin-bottom:15px}
+.hero h2,.panel h2{color:var(--g)}
+p,.hint{color:var(--muted);font-size:13px;line-height:1.7}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stat b{font-size:24px;color:var(--g);display:block}
 .stat span{font-size:12px;color:var(--muted)}
-.section-title{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 12px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:11px}
-.service{border:1px solid var(--line);background:white;border-radius:15px;padding:15px 12px;text-align:left;cursor:pointer;min-height:125px;color:var(--ink)}
-.service:hover{border-color:var(--green2);box-shadow:0 5px 16px #075e5412}
-.ico{font-size:25px;display:block;margin-bottom:9px}
-.service strong{display:block;font-size:14px;margin-bottom:5px}
-.service small{color:var(--muted);font-size:11px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:20px 2px 10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.service{background:white;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;min-height:115px;color:var(--ink);cursor:pointer}
+.service:hover{border-color:var(--g2)}
+.ico{display:block;font-size:24px;margin-bottom:8px}
+.service strong{display:block;font-size:14px}
+.service small{font-size:11px;color:var(--muted)}
 .hidden{display:none!important}
-.back{border:0;background:#e8f3ef;color:var(--green);padding:9px 13px;border-radius:10px;margin-bottom:12px}
-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.back{border:0;background:#e8f3ef;color:var(--g);padding:10px;border-radius:9px;margin-bottom:12px}
+form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
 .field{display:flex;flex-direction:column;gap:6px}
 .field.full{grid-column:1/-1}
 label{font-size:13px;font-weight:bold}
-input,select,textarea{width:100%;padding:12px;border:1px solid #cbdad4;border-radius:10px;font-size:14px;background:white}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cbdad4;border-radius:9px;font-size:14px;background:white;color:var(--ink)}
 textarea{min-height:75px}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
-.btn{border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer}
-.primary{background:var(--green);color:white}
-.secondary{background:#e9f2ee;color:var(--green)}
+button{cursor:pointer}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.btn{border:0;border-radius:9px;padding:11px 14px;font-weight:bold;font-size:13px}
+.primary{background:var(--g);color:white}
+.secondary{background:#e9f2ee;color:var(--g)}
 .danger{background:#fff0ef;color:var(--red)}
-.notice{padding:12px;border-radius:11px;background:#fff8e8;color:#76540c;font-size:12px;line-height:1.6;margin:12px 0}
-.success{padding:12px;border-radius:11px;background:#eaf7ef;color:#17643c;margin:12px 0}
+.notice{padding:12px;border-radius:10px;background:#fff8e8;color:#76540c;font-size:12px;line-height:1.7;margin:12px 0}
+.success{padding:12px;border-radius:10px;background:#eaf7ef;color:#17643c;margin:12px 0}
 .table-wrap{overflow:auto;margin-top:12px}
-table{border-collapse:collapse;width:100%;min-width:520px;font-size:12px}
-th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
-th{background:#f0f6f3;color:var(--green)}
-footer{text-align:center;color:var(--muted);font-size:11px;padding:25px 12px}
-@media(max-width:600px){
-form{grid-template-columns:1fr}
-.field.full{grid-column:auto}
-.hero h2{font-size:18px}
-}
+table{border-collapse:collapse;width:100%;min-width:650px;font-size:12px}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#edf5f1;color:var(--g)}
+.searchgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}
+.smallbtn{padding:7px 9px;border:0;border-radius:7px;margin:2px;font-size:11px}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
+@media(max-width:600px){form{grid-template-columns:1fr}.field.full{grid-column:auto}.stats{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
-
 <header>
 <div class="top">
 <div class="brand">
@@ -71,53 +69,56 @@ form{grid-template-columns:1fr}
 <div class="sub">DIGITAL HEALTH POST ETHIOPIA WERQA</div>
 </div>
 </div>
-<div class="status" id="networkStatus">Offline-ready</div>
+<div class="status" id="networkStatus">Local storage</div>
 </div>
 </header>
 
 <main>
 <section id="home">
-
 <div class="hero">
 <h2>ዲጂታል የጤና ጣቢያ አስተዳደር</h2>
-<p>የእናቶችና ሕፃናት ጤና፣ የቤተሰብ ጤና፣ የላቦራቶሪ አገልግሎት እና የጤና መረጃን በአንድ ቀላል መድረክ ለመመዝገብና ለመከታተል።</p>
+<p>የእናቶችና ሕፃናት ጤና፣ የቤተሰብ ጤና፣ ላቦራቶሪና ሌሎች የጤና አገልግሎቶችን በአንድ መድረክ ለመመዝገብና ለመከታተል።</p>
 </div>
 
 <div class="stats">
 <div class="stat"><b id="totalRecords">0</b><span>ጠቅላላ ምዝገባ</span></div>
 <div class="stat"><b id="todayRecords">0</b><span>የዛሬ ምዝገባ</span></div>
-<div class="stat"><b>12</b><span>የአገልግሎት ዓይነቶች</span></div>
+<div class="stat"><b id="serviceCount">12</b><span>አገልግሎቶች</span></div>
 </div>
 
-<div class="section-title">
-<h3>የጤና አገልግሎቶች</h3>
-<small>ለመክፈት ይንኩ</small>
-</div>
-
+<div class="section-title"><h3>የጤና አገልግሎቶች</h3></div>
 <div class="cards" id="serviceCards"></div>
 
-<div class="section-title">
-<h3>የምዝገባ መረጃ</h3>
+<div class="section-title"><h3>የመረጃ አስተዳደር</h3></div>
+<div class="panel">
+<div class="actions">
+<button class="btn primary" onclick="showRecords()">መዝገቦችን አሳይ / ፈልግ</button>
+<button class="btn secondary" onclick="showReports()">ሪፖርት</button>
+<button class="btn secondary" onclick="backupJSON()">JSON Backup</button>
+</div>
+<div class="notice">የመረጃ ጥበቃ፦ በየጊዜው Backup ያውርዱ። የስልኩን Browser data ማጥፋት የተቀመጠውን መረጃ ሊያጠፋ ይችላል።</div>
 </div>
 
 <div class="panel">
-<p class="hint">የተመዘገቡ መረጃዎችን ማየትና CSV ሪፖርት ማውረድ ይችላሉ።</p>
-<div class="actions">
-<button class="btn secondary" onclick="showRecords()">የተመዘገቡትን አሳይ</button>
-<button class="btn primary" onclick="exportCSV()">ሪፖርት አውርድ</button>
-</div>
-<div id="recordsArea" class="hidden"></div>
+<h3>Backup መመለስ</h3>
+<p>ቀድሞ ያወረዱትን JSON Backup መርጠው ወደ ሲስተሙ መመለስ ይችላሉ።</p>
+<input type="file" id="backupFile" accept=".json,application/json">
+<div class="actions"><button class="btn primary" onclick="restoreJSON()">Backup መመለስ</button></div>
+<div id="backupMessage"></div>
 </div>
 
-<div class="notice">
-ማስታወሻ፦ ይህ የሙከራ ስሪት ነው። መረጃዎች በዚህ ስልክ ላይ ይቀመጣሉ። ወደ ማዕከላዊ ሰርቨር አይላኩም።
+<div class="panel">
+<h3>የማከማቻ ማረጋገጫ</h3>
+<p id="storageStatus">ማረጋገጫ እየተደረገ ነው...</p>
+<button class="btn secondary" onclick="checkStorage()">አሁን አረጋግጥ</button>
 </div>
 </section>
 
 <section id="formPanel" class="panel hidden">
 <button class="back" onclick="goHome()">← ወደ ዋና ገጽ</button>
 <h2 id="formTitle"></h2>
-<p class="hint" id="formHint"></p>
+<p id="formHint"></p>
+<div id="editingNotice" class="notice hidden">የቀድሞ መዝገብ እያስተካከሉ ነው።</div>
 <form id="serviceForm"></form>
 <div class="actions">
 <button class="btn primary" type="button" onclick="saveRecord()">መዝግብ</button>
@@ -125,11 +126,59 @@ form{grid-template-columns:1fr}
 </div>
 <div id="message"></div>
 </section>
+
+<section id="recordsPanel" class="panel hidden">
+<button class="back" onclick="goHome()">← ወደ ዋና ገጽ</button>
+<h2>የተመዘገቡ መረጃዎች</h2>
+<div class="searchgrid">
+<div class="field">
+<label>የመዝገብ ቁጥር</label>
+<input id="searchNumber" placeholder="ለምሳሌ DH-123">
+</div>
+<div class="field">
+<label>አገልግሎት</label>
+<select id="searchService"><option value="">ሁሉም</option></select>
+</div>
+<div class="field">
+<label>ቀን</label>
+<input type="date" id="searchDate">
+</div>
+</div>
+<div class="actions">
+<button class="btn primary" onclick="filterRecords()">ፈልግ</button>
+<button class="btn secondary" onclick="clearSearch()">አጽዳ</button>
+</div>
+<div id="recordsArea"></div>
+</section>
+
+<section id="reportPanel" class="panel hidden">
+<button class="back" onclick="goHome()">← ወደ ዋና ገጽ</button>
+<h2>የጤና አገልግሎት ሪፖርት</h2>
+<div class="field">
+<label>የሪፖርት ዓይነት</label>
+<select id="reportPeriod" onchange="makeReport()">
+<option value="day">ዕለታዊ</option>
+<option value="week">ሳምንታዊ</option>
+<option value="month">ወርሃዊ</option>
+<option value="year">ዓመታዊ</option>
+</select>
+</div>
+<div class="field" style="margin-top:10px">
+<label>የሪፖርት ቀን</label>
+<input type="date" id="reportDate" onchange="makeReport()">
+</div>
+<div id="reportArea"></div>
+<div class="actions"><button class="btn primary" onclick="exportCSV()">CSV ሪፖርት አውርድ</button></div>
+</section>
 </main>
 
-<footer>DHPEW · Digital Health Post Ethiopia Werqa · Version 1.0</footer>
+<footer>DHPEW · Digital Health Post Ethiopia Werqa · Version 2.0</footer>
 
 <script>
+"use strict";
+
+const KEY="dhpew_records";
+
 const services=[
 {id:"anc1",icon:"🤰",name:"ANC 1",desc:"የመጀመሪያ የእርግዝና ክትትል"},
 {id:"anc4",icon:"🤱",name:"ANC 4",desc:"የእርግዝና ክትትል"},
@@ -147,189 +196,202 @@ const services=[
 
 const fields={
 anc1:[
-["mother","የእናት ስም","text",1],
-["age","ዕድሜ","number",1],
-["phone","ስልክ ቁጥር","tel"],
-["kebele","ቀበሌ / መንደር","text",1],
-["gravida","የእርግዝና ብዛት","number"],
-["lmp","የመጨረሻ ወር አበባ ቀን","date"],
-["visit","የጉብኝት ቀን","date",1],
-["notes","ማስታወሻ","textarea"]
-],
+["mother","የእናት ስም","text",1],["age","ዕድሜ","number"],
+["phone","ስልክ ቁጥር","tel"],["kebele","ቀበሌ / መንደር","text",1],
+["gravida","የእርግዝና ብዛት","number"],["lmp","የመጨረሻ ወር አበባ ቀን","date"],
+["visit","የጉብኝት ቀን","date",1],["notes","ማስታወሻ","textarea"]],
 anc4:[
-["mother","የእናት ስም","text",1],
-["age","ዕድሜ","number"],
-["phone","ስልክ ቁጥር","tel"],
-["kebele","ቀበሌ","text"],
+["mother","የእናት ስም","text",1],["age","ዕድሜ","number"],
+["phone","ስልክ ቁጥር","tel"],["kebele","ቀበሌ","text"],
 ["visit","የጉብኝት ቀን","date",1],
 ["risk","የአደጋ ምልክት","select",0,["የለም","አለ - ሪፈር ተደርጓል"]],
-["notes","ማስታወሻ","textarea"]
-],
+["notes","ማስታወሻ","textarea"]],
 anc8:[
-["mother","የእናት ስም","text",1],
-["age","ዕድሜ","number"],
-["phone","ስልክ ቁጥር","tel"],
-["kebele","ቀበሌ","text"],
+["mother","የእናት ስም","text",1],["age","ዕድሜ","number"],
+["phone","ስልክ ቁጥር","tel"],["kebele","ቀበሌ","text"],
 ["visit","የጉብኝት ቀን","date",1],
 ["birthPlan","የወሊድ ዝግጅት","select",0,["ተዘጋጅቷል","አልተዘጋጀም"]],
-["notes","ማስታወሻ","textarea"]
-],
+["notes","ማስታወሻ","textarea"]],
 pnc:[
-["mother","የእናት ስም","text",1],
-["baby","የሕፃን መለያ","text"],
-["deliveryDate","የወሊድ ቀን","date"],
-["visit","የPNC ቀን","date",1],
+["mother","የእናት ስም","text",1],["baby","የሕፃን መለያ","text"],
+["deliveryDate","የወሊድ ቀን","date"],["visit","የPNC ቀን","date",1],
 ["days","ከወሊድ በኋላ ቀን","number"],
 ["danger","የአደጋ ምልክት","select",0,["የለም","አለ - ሪፈር ተደርጓል"]],
-["notes","ማስታወሻ","textarea"]
-],
+["notes","ማስታወሻ","textarea"]],
 delivery:[
-["mother","የእናት ስም","text",1],
-["age","ዕድሜ","number"],
+["mother","የእናት ስም","text",1],["age","ዕድሜ","number"],
 ["date","የወሊድ ቀን","date",1],
 ["place","የወሊድ ቦታ","select",0,["ጤና ጣቢያ","ሆስፒታል","ሌላ"]],
 ["outcome","የወሊድ ውጤት","select",0,["ቀጥታ ሕያው ልጅ","ሌላ"]],
 ["referral","ሪፈር","select",0,["አያስፈልግም","ተደርጓል"]],
-["notes","ማስታወሻ","textarea"]
-],
+["notes","ማስታወሻ","textarea"]],
 model:[
 ["head","የቤተሰብ አስተዳዳሪ ስም","text",1],
 ["householdId","የቤተሰብ መለያ","text",1],
-["kebele","ቀበሌ","text",1],
-["members","የቤተሰብ አባላት ብዛት","number"],
+["kebele","ቀበሌ","text",1],["members","የቤተሰብ አባላት ብዛት","number"],
 ["water","ንጹህ ውሃ","select",0,["አለ","የለም"]],
 ["latrine","የተሻሻለ መጸዳጃ","select",0,["አለ","የለም"]],
 ["handwash","የእጅ መታጠቢያ","select",0,["አለ","የለም"]],
-["visit","የጉብኝት ቀን","date",1],
-["notes","ማስታወሻ","textarea"]
-],
+["visit","የጉብኝት ቀን","date",1],["notes","ማስታወሻ","textarea"]],
 latrine:[
 ["head","የቤተሰብ አስተዳዳሪ ስም","text",1],
-["householdId","የቤተሰብ መለያ","text"],
-["kebele","ቀበሌ","text",1],
+["householdId","የቤተሰብ መለያ","text"],["kebele","ቀበሌ","text",1],
 ["type","የመጸዳጃ ዓይነት","select",0,["Improved pit latrine","VIP latrine","ሌላ"]],
 ["status","ሁኔታ","select",0,["ተጠናቋል","በግንባታ ላይ"]],
-["visit","የምርመራ ቀን","date",1],
-["notes","ማስታወሻ","textarea"]
-],
+["visit","የምርመራ ቀን","date",1],["notes","ማስታወሻ","textarea"]],
 immunization:[
 ["child","የሕፃን ስም / መለያ","text",1],
-["dob","የትውልድ ቀን","date"],
-["caregiver","የአሳዳጊ ስም","text",1],
-["vaccine","የክትባት ዓይነት","text",1],
-["dose","የዶዝ ቁጥር","text"],
-["date","የክትባት ቀን","date",1],
-["notes","ማስታወሻ","textarea"]
-],
+["dob","የትውልድ ቀን","date"],["caregiver","የአሳዳጊ ስም","text",1],
+["vaccine","የክትባት ዓይነት","text",1],["dose","የዶዝ ቁጥር","text"],
+["date","የክትባት ቀን","date",1],["notes","ማስታወሻ","textarea"]],
 nutrition:[
-["person","የእናት / ሕፃን መለያ","text",1],
-["age","ዕድሜ","text"],
-["weight","ክብደት kg","number"],
-["height","ቁመት cm","number"],
+["person","የእናት / ሕፃን መለያ","text",1],["age","ዕድሜ","text"],
+["weight","ክብደት kg","number"],["height","ቁመት cm","number"],
 ["screening","የምርመራ ውጤት","select",0,["መደበኛ","ተጨማሪ ግምገማ","ሪፈር"]],
-["date","ቀን","date",1],
-["notes","ማስታወሻ","textarea"]
-],
+["date","ቀን","date",1],["notes","ማስታወሻ","textarea"]],
 family:[
-["client","የተገልጋይ መለያ","text",1],
-["age","ዕድሜ","number"],
+["client","የተገልጋይ መለያ","text",1],["age","ዕድሜ","number"],
 ["method","የተመረጠ ዘዴ","select",0,["Implant","Injectable","Pills","Condom","IUCD","ምክር ብቻ"]],
-["date","ቀን","date",1],
-["followup","ቀጣይ ክትትል","date"],
-["notes","ማስታወሻ","textarea"]
-],
+["date","ቀን","date",1],["followup","ቀጣይ ክትትል","date"],
+["notes","ማስታወሻ","textarea"]],
 lab:[
-["patient","የታካሚ መለያ","text",1],
-["age","ዕድሜ","number"],
+["patient","የታካሚ መለያ","text",1],["age","ዕድሜ","number"],
 ["sex","ጾታ","select",0,["ሴት","ወንድ"]],
 ["test","የምርመራ ዓይነት","select",0,["CBC","Malaria","TB","HIV","Urinalysis","Stool","Serology","ሌላ"]],
-["result","ውጤት","text"],
-["date","የምርመራ ቀን","date",1],
-["notes","ማስታወሻ","textarea"]
-],
+["result","ውጤት","text"],["date","የምርመራ ቀን","date",1],
+["notes","ማስታወሻ","textarea"]],
 patient:[
-["patient","ሙሉ ስም","text",1],
-["age","ዕድሜ","number"],
+["patient","ሙሉ ስም","text",1],["age","ዕድሜ","number"],
 ["sex","ጾታ","select",0,["ሴት","ወንድ"]],
-["phone","ስልክ ቁጥር","tel"],
-["kebele","ቀበሌ","text"],
+["phone","ስልክ ቁጥር","tel"],["kebele","ቀበሌ","text"],
 ["reason","የመጣበት ምክንያት","text",1],
-["date","የምዝገባ ቀን","date",1],
-["notes","ማስታወሻ","textarea"]
-]
+["date","የምዝገባ ቀን","date",1],["notes","ማስታወሻ","textarea"]]
 };
 
 let currentService=null;
+let editingId=null;
 const $=id=>document.getElementById(id);
 
 function loadRecords(){
-try{return JSON.parse(localStorage.getItem("dhpew_records")||"[]")}
-catch(e){return []}
+try{
+const v=JSON.parse(localStorage.getItem(KEY)||"[]");
+return Array.isArray(v)?v:[];
+}catch(e){
+console.error(e);
+return [];
+}
+}
+
+function saveAll(records){
+const value=JSON.stringify(records);
+localStorage.setItem(KEY,value);
+const check=JSON.parse(localStorage.getItem(KEY)||"null");
+if(!Array.isArray(check)||check.length!==records.length)
+throw new Error("Storage verification failed");
+}
+
+function recordDate(r){
+const defs=fields[r.serviceId]||[];
+for(const f of defs){
+if(f[2]==="date" && r.data && r.data[f[1]])
+return r.data[f[1]];
+}
+return (r.savedAt||"").slice(0,10);
+}
+
+function recordNumber(r){
+return r.recordNo||("DH-"+String(r.id).slice(-8));
 }
 
 function updateStats(){
-let r=loadRecords();
-let today=new Date().toISOString().slice(0,10);
+const r=loadRecords();
+const today=new Date().toISOString().slice(0,10);
 $("totalRecords").textContent=r.length;
-$("todayRecords").textContent=r.filter(x=>x.savedAt.slice(0,10)===today).length;
+$("todayRecords").textContent=r.filter(x=>(x.savedAt||"").slice(0,10)===today).length;
 }
 
 function drawCards(){
 $("serviceCards").innerHTML=services.map(s=>`
 <button class="service" onclick="openService('${s.id}')">
 <span class="ico">${s.icon}</span>
-<strong>${s.name}</strong>
-<small>${s.desc}</small>
+<strong>${s.name}</strong><small>${s.desc}</small>
 </button>`).join("");
+$("searchService").innerHTML='<option value="">ሁሉም</option>'+
+services.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
 }
 
-function openService(id){
+function openService(id,record=null){
 currentService=services.find(s=>s.id===id);
 if(!currentService)return;
+editingId=record?record.id:null;
 $("home").classList.add("hidden");
+$("recordsPanel").classList.add("hidden");
+$("reportPanel").classList.add("hidden");
 $("formPanel").classList.remove("hidden");
-$("formTitle").textContent=currentService.name+" – ምዝገባ";
-$("formHint").textContent=currentService.desc+"። ከታች ያሉትን መረጃዎች ይሙሉ።";
+$("formTitle").textContent=currentService.name+(record?" – ማስተካከያ":" – ምዝገባ");
+$("formHint").textContent=currentService.desc;
+$("editingNotice").classList.toggle("hidden",!record);
 $("message").innerHTML="";
-let f=fields[id]||[];
+const f=fields[id]||[];
 $("serviceForm").innerHTML=f.map(x=>{
-let [key,label,type,required,opts]=x;
+const [key,label,type,required,opts]=x;
+const val=record?.data?.[label]??"";
 let input="";
+const safeVal=escapeHTML(val);
 if(type==="textarea"){
-input=`<textarea id="f_${key}" ${required?"required":""}></textarea>`;
+input=`<textarea id="f_${key}" ${required?"required":""}>${safeVal}</textarea>`;
 }else if(type==="select"){
-input=`<select id="f_${key}" ${required?"required":""}><option value="">ይምረጡ</option>${opts.map(o=>`<option>${o}</option>`).join("")}</select>`;
+input=`<select id="f_${key}" ${required?"required":""}>
+<option value="">ይምረጡ</option>
+${opts.map(o=>`<option value="${escapeHTML(o)}" ${val===o?"selected":""}>${escapeHTML(o)}</option>`).join("")}
+</select>`;
 }else{
-input=`<input id="f_${key}" type="${type}" ${required?"required":""} ${type==="number"?'min="0"':''}>`;
+input=`<input id="f_${key}" type="${type}" value="${safeVal}" ${required?"required":""} ${type==="number"?'min="0"':''}>`;
 }
-return `<div class="${type==="textarea"?"field full":"field"}"><label>${label}${required?" *":""}</label>${input}</div>`;
+return `<div class="${type==="textarea"?"field full":"field"}">
+<label for="f_${key}">${label}${required?" *":""}</label>${input}</div>`;
 }).join("");
 }
 
 function saveRecord(){
-let form=$("serviceForm");
+if(!currentService)return;
+const form=$("serviceForm");
 if(!form.reportValidity())return;
-let data={};
+const data={};
 (fields[currentService.id]||[]).forEach(x=>{
-let el=$("f_"+x[0]);
+const el=$("f_"+x[0]);
 data[x[1]]=el?el.value.trim():"";
 });
-let record={
-id:Date.now(),
+try{
+let records=loadRecords();
+if(editingId!==null){
+const index=records.findIndex(r=>r.id===editingId);
+if(index<0)throw new Error("Record not found");
+records[index]={...records[index],data:data,updatedAt:new Date().toISOString()};
+saveAll(records);
+$("message").innerHTML='<div class="success">✓ መረጃው ተስተካክሏል።</div>';
+editingId=null;
+$("editingNotice").classList.add("hidden");
+$("formTitle").textContent=currentService.name+" – ምዝገባ";
+}else{
+const id=Date.now();
+const record={
+id:id,
+recordNo:"DH-"+id.toString().slice(-8),
 service:currentService.name,
 serviceId:currentService.id,
 data:data,
 savedAt:new Date().toISOString()
 };
-let records=loadRecords();
 records.push(record);
-try{
-localStorage.setItem("dhpew_records",JSON.stringify(records));
-$("message").innerHTML='<div class="success">✓ ምዝገባው ተቀምጧል።</div>';
+saveAll(records);
+$("message").innerHTML='<div class="success">✓ ምዝገባው ተቀምጧል።<br>የመዝገብ ቁጥር፦ '+record.recordNo+'</div>';
+}
 form.reset();
 updateStats();
 }catch(e){
-$("message").innerHTML='<div class="notice">መረጃውን ማስቀመጥ አልተቻለም።</div>';
+console.error(e);
+$("message").innerHTML='<div class="notice">ስህተት፦ መረጃውን ማስቀመጥ አልተቻለም። Backup አድርገው የስልኩን የማከማቻ ቦታ ያረጋግጡ።</div>';
 }
 }
 
@@ -338,64 +400,240 @@ $("serviceForm").reset();
 $("message").innerHTML="";
 }
 
-function goHome(){
-$("formPanel").classList.add("hidden");
-$("home").classList.remove("hidden");
-currentService=null;
-updateStats();
-}
-
 function escapeHTML(s){
-return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+return String(s??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
 }
 
 function showRecords(){
+$("home").classList.add("hidden");
+$("formPanel").classList.add("hidden");
+$("reportPanel").classList.add("hidden");
+$("recordsPanel").classList.remove("hidden");
+filterRecords();
+}
+
+function filterRecords(){
+const number=$("searchNumber").value.trim().toLowerCase();
+const service=$("searchService").value;
+const date=$("searchDate").value;
 let r=loadRecords();
-let area=$("recordsArea");
-area.classList.remove("hidden");
-if(!r.length){
-area.innerHTML='<p class="hint">ገና ምንም ምዝገባ የለም።</p>';
+r=r.filter(x=>{
+const n=recordNumber(x).toLowerCase();
+return (!number||n.includes(number)||String(x.id).includes(number))
+&&(!service||x.serviceId===service)
+&&(!date||recordDate(x)===date);
+});
+renderRecords(r);
+}
+
+function renderRecords(records){
+const area=$("recordsArea");
+if(!records.length){
+area.innerHTML='<p class="hint">የተፈለገው መረጃ አልተገኘም።</p>';
 return;
 }
 area.innerHTML=`<div class="table-wrap"><table>
-<thead><tr><th>አገልግሎት</th><th>ዋና መለያ</th><th>ቀን</th></tr></thead>
-<tbody>${r.slice().reverse().map(x=>`
-<tr><td>${escapeHTML(x.service)}</td><td>${escapeHTML(Object.values(x.data)[0]||"-")}</td><td>${x.savedAt.slice(0,10)}</td></tr>
-`).join("")}</tbody></table></div>
-<div class="actions"><button class="btn danger" onclick="clearRecords()">ሁሉንም ምዝገባ አጥፋ</button></div>`;
+<thead><tr><th>መዝገብ ቁጥር</th><th>አገልግሎት</th><th>ዋና መረጃ</th><th>ቀን</th><th>ድርጊት</th></tr></thead>
+<tbody>${records.slice().reverse().map(r=>{
+const first=Object.values(r.data||{})[0]||"-";
+return `<tr>
+<td>${escapeHTML(recordNumber(r))}</td>
+<td>${escapeHTML(r.service)}</td>
+<td>${escapeHTML(first)}</td>
+<td>${escapeHTML(recordDate(r))}</td>
+<td>
+<button class="smallbtn secondary" onclick="viewRecord(${Number(r.id)})">አሳይ</button>
+<button class="smallbtn secondary" onclick="editRecord(${Number(r.id)})">አስተካክል</button>
+<button class="smallbtn danger" onclick="deleteRecord(${Number(r.id)})">አጥፋ</button>
+</td></tr>`;
+}).join("")}</tbody></table></div>`;
 }
 
-function clearRecords(){
-if(!confirm("ሁሉም ምዝገባዎች ይጠፋሉ። እርግጠኛ ነዎት?"))return;
-localStorage.removeItem("dhpew_records");
-$("recordsArea").classList.add("hidden");
+function viewRecord(id){
+const r=loadRecords().find(x=>x.id===id);
+if(!r)return alert("መዝገቡ አልተገኘም።");
+let lines=Object.entries(r.data||{}).map(([k,v])=>k+" : "+v).join("\n");
+alert("መዝገብ ቁጥር፦ "+recordNumber(r)+
+"\nአገልግሎት፦ "+r.service+
+"\nቀን፦ "+recordDate(r)+"\n\n"+lines);
+}
+
+function editRecord(id){
+const r=loadRecords().find(x=>x.id===id);
+if(!r)return alert("መዝገቡ አልተገኘም።");
+openService(r.serviceId,r);
+}
+
+function deleteRecord(id){
+if(!confirm("ይህን አንድ መዝገብ ለማጥፋት እርግጠኛ ነዎት?"))return;
+try{
+const r=loadRecords().filter(x=>x.id!==id);
+saveAll(r);
 updateStats();
+filterRecords();
+}catch(e){alert("መዝገቡን ማጥፋት አልተቻለም።");}
+}
+
+function clearSearch(){
+$("searchNumber").value="";
+$("searchService").value="";
+$("searchDate").value="";
+filterRecords();
+}
+
+function showReports(){
+$("home").classList.add("hidden");
+$("formPanel").classList.add("hidden");
+$("recordsPanel").classList.add("hidden");
+$("reportPanel").classList.remove("hidden");
+$("reportDate").value=new Date().toISOString().slice(0,10);
+makeReport();
+}
+
+function makeReport(){
+const period=$("reportPeriod").value;
+const selected=$("reportDate").value;
+if(!selected)return;
+const d=new Date(selected+"T12:00:00");
+let start,end;
+if(period==="day"){
+start=selected;end=selected;
+}else if(period==="week"){
+const day=(d.getDay()+6)%7;
+const s=new Date(d);s.setDate(d.getDate()-day);
+const e=new Date(s);e.setDate(s.getDate()+6);
+start=localDate(s);end=localDate(e);
+}else if(period==="month"){
+start=selected.slice(0,7)+"-01";
+const e=new Date(d.getFullYear(),d.getMonth()+1,0);
+end=localDate(e);
+}else{
+start=d.getFullYear()+"-01-01";
+end=d.getFullYear()+"-12-31";
+}
+const r=loadRecords().filter(x=>{
+const rd=recordDate(x);
+return rd>=start&&rd<=end;
+});
+const counts={};
+services.forEach(s=>counts[s.id]=0);
+r.forEach(x=>{if(counts[x.serviceId]!==undefined)counts[x.serviceId]++;});
+$("reportArea").innerHTML=`
+<div class="success">የሪፖርት ጊዜ፦ ${start} እስከ ${end}<br>ጠቅላላ ምዝገባ፦ <b>${r.length}</b></div>
+<div class="table-wrap"><table>
+<thead><tr><th>አገልግሎት</th><th>የምዝገባ ብዛት</th></tr></thead>
+<tbody>${services.map(s=>`<tr><td>${s.name}</td><td>${counts[s.id]}</td></tr>`).join("")}</tbody>
+</table></div>`;
+}
+
+function localDate(d){
+return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+
+function backupJSON(){
+try{
+const records=loadRecords();
+const backup={
+system:"DHPEW",
+version:"2.0",
+createdAt:new Date().toISOString(),
+recordCount:records.length,
+records:records
+};
+const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});
+downloadBlob(blob,"DHPEW-backup-"+localDate(new Date())+".json");
+alert("JSON Backup ተዘጋጅቷል። ፋይሉን በስልክዎ ያስቀምጡ።");
+}catch(e){alert("Backup ማውረድ አልተቻለም።");}
+}
+
+function restoreJSON(){
+const file=$("backupFile").files[0];
+if(!file){alert("እባክዎ JSON Backup ይምረጡ።");return;}
+const reader=new FileReader();
+reader.onload=function(){
+try{
+const obj=JSON.parse(reader.result);
+const incoming=Array.isArray(obj)?obj:obj.records;
+if(!Array.isArray(incoming))throw new Error("Invalid backup");
+if(!confirm("Backup ውስጥ "+incoming.length+" መዝገቦች አሉ። አሁን ያሉትን መዝገቦች በBackup ውስጥ ባሉት ለመተካት እርግጠኛ ነዎት? በፊት ያለውን Backup ያውርዱ።"))return;
+saveAll(incoming);
+updateStats();
+$("backupMessage").innerHTML='<div class="success">✓ Backup ተመልሷል። '+incoming.length+' መዝገቦች ተጫኑ።</div>';
+}catch(e){
+console.error(e);
+$("backupMessage").innerHTML='<div class="notice">የBackup ፋይሉ ትክክለኛ አይደለም ወይም መመለስ አልተቻለም።</div>';
+}
+};
+reader.onerror=()=>alert("ፋይሉን ማንበብ አልተቻለም።");
+reader.readAsText(file);
 }
 
 function exportCSV(){
-let r=loadRecords();
-if(!r.length){alert("ለማውረድ መረጃ የለም።");return}
-let keys=[...new Set(r.flatMap(x=>Object.keys(x.data)))];
-let rows=[["Service","Saved date",...keys],...r.map(x=>[x.service,x.savedAt,...keys.map(k=>x.data[k]||"")])];
-let csv="\uFEFF"+rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
-let blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
-let url=URL.createObjectURL(blob);
-let a=document.createElement("a");
+const r=loadRecords();
+if(!r.length)return alert("ለማውረድ መረጃ የለም።");
+const keys=[...new Set(r.flatMap(x=>Object.keys(x.data||{})))];
+const rows=[
+["Record Number","Service","Date","Saved At",...keys],
+...r.map(x=>[
+recordNumber(x),x.service,recordDate(x),x.savedAt,
+...keys.map(k=>x.data?.[k]||"")
+])
+];
+const csv="\uFEFF"+rows.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\n");
+downloadBlob(new Blob([csv],{type:"text/csv;charset=utf-8"}),"DHPEW-report.csv");
+}
+
+function downloadBlob(blob,name){
+const url=URL.createObjectURL(blob);
+const a=document.createElement("a");
 a.href=url;
-a.download="DHPEW-health-records.csv";
+a.download=name;
+document.body.appendChild(a);
 a.click();
-URL.revokeObjectURL(url);
+a.remove();
+setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+function checkStorage(){
+try{
+const test="dhpew_test_"+Date.now();
+localStorage.setItem(test,"OK");
+const result=localStorage.getItem(test);
+localStorage.removeItem(test);
+const count=loadRecords().length;
+$("storageStatus").innerHTML=result==="OK"
+?"✓ ማከማቻው እየሰራ ነው።<br>የተቀመጡ መዝገቦች፦ "+count
+:"⚠ የማከማቻ ችግር አለ።";
+}catch(e){
+$("storageStatus").innerHTML="⚠ የማከማቻ ስህተት። ቦታው ሞልቶ ሊሆን ይችላል።";
+}
 }
 
 function net(){
-$("networkStatus").textContent=navigator.onLine?"Internet available · Local save":"Offline · Local save";
+$("networkStatus").textContent=navigator.onLine
+?"Internet available · Local save"
+:"Offline · Local save";
+}
+
+function goHome(){
+$("formPanel").classList.add("hidden");
+$("recordsPanel").classList.add("hidden");
+$("reportPanel").classList.add("hidden");
+$("home").classList.remove("hidden");
+currentService=null;
+editingId=null;
+updateStats();
 }
 
 window.addEventListener("online",net);
 window.addEventListener("offline",net);
+
 drawCards();
 updateStats();
 net();
+checkStorage();
 </script>
 </body>
 </html>
