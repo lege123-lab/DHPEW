@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="am">
 <head>
@@ -50,7 +49,7 @@ button{cursor:pointer}
 .notice{padding:12px;border-radius:10px;background:#fff8e8;color:#76540c;font-size:12px;line-height:1.7;margin:12px 0}
 .success{padding:12px;border-radius:10px;background:#eaf7ef;color:#17643c;margin:12px 0}
 .table-wrap{overflow:auto;margin-top:12px}
-table{border-collapse:collapse;width:100%;min-width:650px;font-size:12px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:12px}
 th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{background:#edf5f1;color:var(--g)}
 .searchgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}
@@ -130,18 +129,23 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 <section id="recordsPanel" class="panel hidden">
 <button class="back" onclick="goHome()">← ወደ ዋና ገጽ</button>
 <h2>የተመዘገቡ መረጃዎች</h2>
+
 <div class="searchgrid">
 <div class="field">
-<label>የመዝገብ ቁጥር</label>
-<input id="searchNumber" placeholder="ለምሳሌ DH-123">
+<label>የታካሚ ሙሉ ስም</label>
+<input id="searchName" placeholder="ስም ያስገቡ..." oninput="filterRecords()">
+</div>
+<div class="field">
+<label>የመዝገብ ቁጥር (Record Number)</label>
+<input id="searchNumber" placeholder="ለምሳሌ DH-123" oninput="filterRecords()">
 </div>
 <div class="field">
 <label>አገልግሎት</label>
-<select id="searchService"><option value="">ሁሉም</option></select>
+<select id="searchService" onchange="filterRecords()"><option value="">ሁሉም</option></select>
 </div>
 <div class="field">
 <label>ቀን</label>
-<input type="date" id="searchDate">
+<input type="date" id="searchDate" onchange="filterRecords()">
 </div>
 </div>
 <div class="actions">
@@ -172,7 +176,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 </section>
 </main>
 
-<footer>DHPEW · Digital Health Post Ethiopia Werqa · Version 2.0</footer>
+<footer>DHPEW · Digital Health Post Ethiopia Werqa · Version 2.1</footer>
 
 <script>
 "use strict";
@@ -290,6 +294,10 @@ if(!Array.isArray(check)||check.length!==records.length)
 throw new Error("Storage verification failed");
 }
 
+function localDate(d){
+return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+
 function recordDate(r){
 const defs=fields[r.serviceId]||[];
 for(const f of defs){
@@ -303,9 +311,29 @@ function recordNumber(r){
 return r.recordNo||("DH-"+String(r.id).slice(-8));
 }
 
+/* የእያንዳንዱን አገልግሎት ዋና የሰው ስም ይለያል */
+function patientName(r){
+const nameFields={
+patient:"ሙሉ ስም",
+anc1:"የእናት ስም",
+anc4:"የእናት ስም",
+anc8:"የእናት ስም",
+pnc:"የእናት ስም",
+delivery:"የእናት ስም",
+model:"የቤተሰብ አስተዳዳሪ ስም",
+latrine:"የቤተሰብ አስተዳዳሪ ስም",
+immunization:"የሕፃን ስም / መለያ",
+nutrition:"የእናት / ሕፃን መለያ",
+family:"የተገልጋይ መለያ",
+lab:"የታካሚ መለያ"
+};
+const key=nameFields[r.serviceId];
+return String((r.data&&key&&r.data[key])||"").trim()||"—";
+}
+
 function updateStats(){
 const r=loadRecords();
-const today=new Date().toISOString().slice(0,10);
+const today=localDate(new Date());
 $("totalRecords").textContent=r.length;
 $("todayRecords").textContent=r.filter(x=>(x.savedAt||"").slice(0,10)===today).length;
 }
@@ -415,13 +443,16 @@ filterRecords();
 }
 
 function filterRecords(){
+const name=$("searchName").value.trim().toLowerCase();
 const number=$("searchNumber").value.trim().toLowerCase();
 const service=$("searchService").value;
 const date=$("searchDate").value;
 let r=loadRecords();
 r=r.filter(x=>{
 const n=recordNumber(x).toLowerCase();
-return (!number||n.includes(number)||String(x.id).includes(number))
+const person=patientName(x).toLowerCase();
+return (!name||person.includes(name))
+&&(!number||n.includes(number)||String(x.id).includes(number))
 &&(!service||x.serviceId===service)
 &&(!date||recordDate(x)===date);
 });
@@ -435,12 +466,16 @@ area.innerHTML='<p class="hint">የተፈለገው መረጃ አልተገኘም�
 return;
 }
 area.innerHTML=`<div class="table-wrap"><table>
-<thead><tr><th>መዝገብ ቁጥር</th><th>አገልግሎት</th><th>ዋና መረጃ</th><th>ቀን</th><th>ድርጊት</th></tr></thead>
+<thead><tr>
+<th>Record Number</th><th>የታካሚ ስም</th>
+<th>አገልግሎት</th><th>ዋና መረጃ</th><th>ቀን</th><th>ድርጊት</th>
+</tr></thead>
 <tbody>${records.slice().reverse().map(r=>{
 const first=Object.values(r.data||{})[0]||"-";
 return `<tr>
-<td>${escapeHTML(recordNumber(r))}</td>
-<td>${escapeHTML(r.service)}</td>
+<td><strong>${escapeHTML(recordNumber(r))}</strong></td>
+<td>${escapeHTML(patientName(r))}</td>
+<td>${escapeHTML(r.service||"")}</td>
 <td>${escapeHTML(first)}</td>
 <td>${escapeHTML(recordDate(r))}</td>
 <td>
@@ -456,6 +491,7 @@ const r=loadRecords().find(x=>x.id===id);
 if(!r)return alert("መዝገቡ አልተገኘም።");
 let lines=Object.entries(r.data||{}).map(([k,v])=>k+" : "+v).join("\n");
 alert("መዝገብ ቁጥር፦ "+recordNumber(r)+
+"\nየታካሚ ስም፦ "+patientName(r)+
 "\nአገልግሎት፦ "+r.service+
 "\nቀን፦ "+recordDate(r)+"\n\n"+lines);
 }
@@ -477,6 +513,7 @@ filterRecords();
 }
 
 function clearSearch(){
+$("searchName").value="";
 $("searchNumber").value="";
 $("searchService").value="";
 $("searchDate").value="";
@@ -488,7 +525,7 @@ $("home").classList.add("hidden");
 $("formPanel").classList.add("hidden");
 $("recordsPanel").classList.add("hidden");
 $("reportPanel").classList.remove("hidden");
-$("reportDate").value=new Date().toISOString().slice(0,10);
+$("reportDate").value=localDate(new Date());
 makeReport();
 }
 
@@ -528,16 +565,12 @@ $("reportArea").innerHTML=`
 </table></div>`;
 }
 
-function localDate(d){
-return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-}
-
 function backupJSON(){
 try{
 const records=loadRecords();
 const backup={
 system:"DHPEW",
-version:"2.0",
+version:"2.1",
 createdAt:new Date().toISOString(),
 recordCount:records.length,
 records:records
@@ -575,9 +608,9 @@ const r=loadRecords();
 if(!r.length)return alert("ለማውረድ መረጃ የለም።");
 const keys=[...new Set(r.flatMap(x=>Object.keys(x.data||{})))];
 const rows=[
-["Record Number","Service","Date","Saved At",...keys],
+["Record Number","Patient Name","Service","Date","Saved At",...keys],
 ...r.map(x=>[
-recordNumber(x),x.service,recordDate(x),x.savedAt,
+recordNumber(x),patientName(x),x.service,recordDate(x),x.savedAt,
 ...keys.map(k=>x.data?.[k]||"")
 ])
 ];
