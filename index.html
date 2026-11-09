@@ -1,30 +1,401 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="am">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DHPEW - Digital Health Post Ethiopia Werqa</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#075e54">
+<title>DHPEW | Digital Health Post Ethiopia Werqa</title>
+<style>
+:root{--green:#075e54;--green2:#0b806e;--ink:#18312d;--muted:#657873;--bg:#f3f7f5;--line:#dce8e3;--red:#b42318}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(120deg,#064e46,#0c8874);color:white;padding:20px 16px}
+.top{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:48px;height:48px;border-radius:14px;background:#ffffff20;display:grid;place-items:center;font-size:27px}
+h1{font-size:20px;margin:0 0 5px}
+.sub{font-size:12px}
+.status{font-size:12px;padding:8px 11px;border-radius:30px;background:#ffffff20}
+main{max-width:1100px;margin:20px auto;padding:0 14px 40px}
+.hero,.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:19px;margin-bottom:17px}
+.hero h2,.panel h2{color:var(--green)}
+.hero p,.hint{color:var(--muted);line-height:1.7;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}
+.stat{background:white;border:1px solid var(--line);border-radius:14px;padding:13px}
+.stat b{font-size:23px;color:var(--green);display:block}
+.stat span{font-size:12px;color:var(--muted)}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:11px}
+.service{border:1px solid var(--line);background:white;border-radius:15px;padding:15px 12px;text-align:left;cursor:pointer;min-height:125px;color:var(--ink)}
+.service:hover{border-color:var(--green2);box-shadow:0 5px 16px #075e5412}
+.ico{font-size:25px;display:block;margin-bottom:9px}
+.service strong{display:block;font-size:14px;margin-bottom:5px}
+.service small{color:var(--muted);font-size:11px}
+.hidden{display:none!important}
+.back{border:0;background:#e8f3ef;color:var(--green);padding:9px 13px;border-radius:10px;margin-bottom:12px}
+form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label{font-size:13px;font-weight:bold}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cbdad4;border-radius:10px;font-size:14px;background:white}
+textarea{min-height:75px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.btn{border:0;border-radius:10px;padding:12px 16px;font-weight:bold;cursor:pointer}
+.primary{background:var(--green);color:white}
+.secondary{background:#e9f2ee;color:var(--green)}
+.danger{background:#fff0ef;color:var(--red)}
+.notice{padding:12px;border-radius:11px;background:#fff8e8;color:#76540c;font-size:12px;line-height:1.6;margin:12px 0}
+.success{padding:12px;border-radius:11px;background:#eaf7ef;color:#17643c;margin:12px 0}
+.table-wrap{overflow:auto;margin-top:12px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:12px}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+th{background:#f0f6f3;color:var(--green)}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:25px 12px}
+@media(max-width:600px){
+form{grid-template-columns:1fr}
+.field.full{grid-column:auto}
+.hero h2{font-size:18px}
+}
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>DHPEW</h1>
-    <p>Digital Health Post Ethiopia Werqa</p>
-  </header>
+<header>
+<div class="top">
+<div class="brand">
+<div class="logo">✚</div>
+<div>
+<h1>DHPEW</h1>
+<div class="sub">DIGITAL HEALTH POST ETHIOPIA WERQA</div>
+</div>
+</div>
+<div class="status" id="networkStatus">Offline-ready</div>
+</div>
+</header>
 
-  <main>
-    <h2>Welcome to DHPEW</h2>
-    <p>Digital Health Services for Ethiopia</p>
+<main>
+<section id="home">
 
-    <section>
-      <h3>Health Post Services</h3>
-      <p>Laboratory Services</p>
-      <p>Patient Registration</p>
-      <p>Health Information Management</p>
-    </section>
-  </main>
+<div class="hero">
+<h2>ዲጂታል የጤና ጣቢያ አስተዳደር</h2>
+<p>የእናቶችና ሕፃናት ጤና፣ የቤተሰብ ጤና፣ የላቦራቶሪ አገልግሎት እና የጤና መረጃን በአንድ ቀላል መድረክ ለመመዝገብና ለመከታተል።</p>
+</div>
 
-  <script src="script.js"></script>
+<div class="stats">
+<div class="stat"><b id="totalRecords">0</b><span>ጠቅላላ ምዝገባ</span></div>
+<div class="stat"><b id="todayRecords">0</b><span>የዛሬ ምዝገባ</span></div>
+<div class="stat"><b>12</b><span>የአገልግሎት ዓይነቶች</span></div>
+</div>
+
+<div class="section-title">
+<h3>የጤና አገልግሎቶች</h3>
+<small>ለመክፈት ይንኩ</small>
+</div>
+
+<div class="cards" id="serviceCards"></div>
+
+<div class="section-title">
+<h3>የምዝገባ መረጃ</h3>
+</div>
+
+<div class="panel">
+<p class="hint">የተመዘገቡ መረጃዎችን ማየትና CSV ሪፖርት ማውረድ ይችላሉ።</p>
+<div class="actions">
+<button class="btn secondary" onclick="showRecords()">የተመዘገቡትን አሳይ</button>
+<button class="btn primary" onclick="exportCSV()">ሪፖርት አውርድ</button>
+</div>
+<div id="recordsArea" class="hidden"></div>
+</div>
+
+<div class="notice">
+ማስታወሻ፦ ይህ የሙከራ ስሪት ነው። መረጃዎች በዚህ ስልክ ላይ ይቀመጣሉ። ወደ ማዕከላዊ ሰርቨር አይላኩም።
+</div>
+</section>
+
+<section id="formPanel" class="panel hidden">
+<button class="back" onclick="goHome()">← ወደ ዋና ገጽ</button>
+<h2 id="formTitle"></h2>
+<p class="hint" id="formHint"></p>
+<form id="serviceForm"></form>
+<div class="actions">
+<button class="btn primary" type="button" onclick="saveRecord()">መዝግብ</button>
+<button class="btn secondary" type="button" onclick="resetForm()">ቅጹን አጽዳ</button>
+</div>
+<div id="message"></div>
+</section>
+</main>
+
+<footer>DHPEW · Digital Health Post Ethiopia Werqa · Version 1.0</footer>
+
+<script>
+const services=[
+{id:"anc1",icon:"🤰",name:"ANC 1",desc:"የመጀመሪያ የእርግዝና ክትትል"},
+{id:"anc4",icon:"🤱",name:"ANC 4",desc:"የእርግዝና ክትትል"},
+{id:"anc8",icon:"🩺",name:"ANC 8",desc:"ስምንት ጊዜ ክትትል"},
+{id:"pnc",icon:"👩‍🍼",name:"PNC",desc:"ድህረ ወሊድ ክትትል"},
+{id:"delivery",icon:"👶",name:"Delivery",desc:"የወሊድ አገልግሎት"},
+{id:"model",icon:"🏡",name:"Model Household",desc:"የሞዴል ቤተሰብ"},
+{id:"latrine",icon:"🚻",name:"Improved Latrine",desc:"የተሻሻለ መጸዳጃ"},
+{id:"immunization",icon:"💉",name:"Immunization",desc:"የሕፃናት ክትባት"},
+{id:"nutrition",icon:"🥗",name:"Nutrition",desc:"የአመጋገብ ክትትል"},
+{id:"family",icon:"👨‍👩‍👧",name:"Family Planning",desc:"የቤተሰብ ምጣኔ"},
+{id:"lab",icon:"🧪",name:"Laboratory",desc:"የላቦራቶሪ ምርመራ"},
+{id:"patient",icon:"📝",name:"Patient Registration",desc:"የታካሚ ምዝገባ"}
+];
+
+const fields={
+anc1:[
+["mother","የእናት ስም","text",1],
+["age","ዕድሜ","number",1],
+["phone","ስልክ ቁጥር","tel"],
+["kebele","ቀበሌ / መንደር","text",1],
+["gravida","የእርግዝና ብዛት","number"],
+["lmp","የመጨረሻ ወር አበባ ቀን","date"],
+["visit","የጉብኝት ቀን","date",1],
+["notes","ማስታወሻ","textarea"]
+],
+anc4:[
+["mother","የእናት ስም","text",1],
+["age","ዕድሜ","number"],
+["phone","ስልክ ቁጥር","tel"],
+["kebele","ቀበሌ","text"],
+["visit","የጉብኝት ቀን","date",1],
+["risk","የአደጋ ምልክት","select",0,["የለም","አለ - ሪፈር ተደርጓል"]],
+["notes","ማስታወሻ","textarea"]
+],
+anc8:[
+["mother","የእናት ስም","text",1],
+["age","ዕድሜ","number"],
+["phone","ስልክ ቁጥር","tel"],
+["kebele","ቀበሌ","text"],
+["visit","የጉብኝት ቀን","date",1],
+["birthPlan","የወሊድ ዝግጅት","select",0,["ተዘጋጅቷል","አልተዘጋጀም"]],
+["notes","ማስታወሻ","textarea"]
+],
+pnc:[
+["mother","የእናት ስም","text",1],
+["baby","የሕፃን መለያ","text"],
+["deliveryDate","የወሊድ ቀን","date"],
+["visit","የPNC ቀን","date",1],
+["days","ከወሊድ በኋላ ቀን","number"],
+["danger","የአደጋ ምልክት","select",0,["የለም","አለ - ሪፈር ተደርጓል"]],
+["notes","ማስታወሻ","textarea"]
+],
+delivery:[
+["mother","የእናት ስም","text",1],
+["age","ዕድሜ","number"],
+["date","የወሊድ ቀን","date",1],
+["place","የወሊድ ቦታ","select",0,["ጤና ጣቢያ","ሆስፒታል","ሌላ"]],
+["outcome","የወሊድ ውጤት","select",0,["ቀጥታ ሕያው ልጅ","ሌላ"]],
+["referral","ሪፈር","select",0,["አያስፈልግም","ተደርጓል"]],
+["notes","ማስታወሻ","textarea"]
+],
+model:[
+["head","የቤተሰብ አስተዳዳሪ ስም","text",1],
+["householdId","የቤተሰብ መለያ","text",1],
+["kebele","ቀበሌ","text",1],
+["members","የቤተሰብ አባላት ብዛት","number"],
+["water","ንጹህ ውሃ","select",0,["አለ","የለም"]],
+["latrine","የተሻሻለ መጸዳጃ","select",0,["አለ","የለም"]],
+["handwash","የእጅ መታጠቢያ","select",0,["አለ","የለም"]],
+["visit","የጉብኝት ቀን","date",1],
+["notes","ማስታወሻ","textarea"]
+],
+latrine:[
+["head","የቤተሰብ አስተዳዳሪ ስም","text",1],
+["householdId","የቤተሰብ መለያ","text"],
+["kebele","ቀበሌ","text",1],
+["type","የመጸዳጃ ዓይነት","select",0,["Improved pit latrine","VIP latrine","ሌላ"]],
+["status","ሁኔታ","select",0,["ተጠናቋል","በግንባታ ላይ"]],
+["visit","የምርመራ ቀን","date",1],
+["notes","ማስታወሻ","textarea"]
+],
+immunization:[
+["child","የሕፃን ስም / መለያ","text",1],
+["dob","የትውልድ ቀን","date"],
+["caregiver","የአሳዳጊ ስም","text",1],
+["vaccine","የክትባት ዓይነት","text",1],
+["dose","የዶዝ ቁጥር","text"],
+["date","የክትባት ቀን","date",1],
+["notes","ማስታወሻ","textarea"]
+],
+nutrition:[
+["person","የእናት / ሕፃን መለያ","text",1],
+["age","ዕድሜ","text"],
+["weight","ክብደት kg","number"],
+["height","ቁመት cm","number"],
+["screening","የምርመራ ውጤት","select",0,["መደበኛ","ተጨማሪ ግምገማ","ሪፈር"]],
+["date","ቀን","date",1],
+["notes","ማስታወሻ","textarea"]
+],
+family:[
+["client","የተገልጋይ መለያ","text",1],
+["age","ዕድሜ","number"],
+["method","የተመረጠ ዘዴ","select",0,["Implant","Injectable","Pills","Condom","IUCD","ምክር ብቻ"]],
+["date","ቀን","date",1],
+["followup","ቀጣይ ክትትል","date"],
+["notes","ማስታወሻ","textarea"]
+],
+lab:[
+["patient","የታካሚ መለያ","text",1],
+["age","ዕድሜ","number"],
+["sex","ጾታ","select",0,["ሴት","ወንድ"]],
+["test","የምርመራ ዓይነት","select",0,["CBC","Malaria","TB","HIV","Urinalysis","Stool","Serology","ሌላ"]],
+["result","ውጤት","text"],
+["date","የምርመራ ቀን","date",1],
+["notes","ማስታወሻ","textarea"]
+],
+patient:[
+["patient","ሙሉ ስም","text",1],
+["age","ዕድሜ","number"],
+["sex","ጾታ","select",0,["ሴት","ወንድ"]],
+["phone","ስልክ ቁጥር","tel"],
+["kebele","ቀበሌ","text"],
+["reason","የመጣበት ምክንያት","text",1],
+["date","የምዝገባ ቀን","date",1],
+["notes","ማስታወሻ","textarea"]
+]
+};
+
+let currentService=null;
+const $=id=>document.getElementById(id);
+
+function loadRecords(){
+try{return JSON.parse(localStorage.getItem("dhpew_records")||"[]")}
+catch(e){return []}
+}
+
+function updateStats(){
+let r=loadRecords();
+let today=new Date().toISOString().slice(0,10);
+$("totalRecords").textContent=r.length;
+$("todayRecords").textContent=r.filter(x=>x.savedAt.slice(0,10)===today).length;
+}
+
+function drawCards(){
+$("serviceCards").innerHTML=services.map(s=>`
+<button class="service" onclick="openService('${s.id}')">
+<span class="ico">${s.icon}</span>
+<strong>${s.name}</strong>
+<small>${s.desc}</small>
+</button>`).join("");
+}
+
+function openService(id){
+currentService=services.find(s=>s.id===id);
+if(!currentService)return;
+$("home").classList.add("hidden");
+$("formPanel").classList.remove("hidden");
+$("formTitle").textContent=currentService.name+" – ምዝገባ";
+$("formHint").textContent=currentService.desc+"። ከታች ያሉትን መረጃዎች ይሙሉ።";
+$("message").innerHTML="";
+let f=fields[id]||[];
+$("serviceForm").innerHTML=f.map(x=>{
+let [key,label,type,required,opts]=x;
+let input="";
+if(type==="textarea"){
+input=`<textarea id="f_${key}" ${required?"required":""}></textarea>`;
+}else if(type==="select"){
+input=`<select id="f_${key}" ${required?"required":""}><option value="">ይምረጡ</option>${opts.map(o=>`<option>${o}</option>`).join("")}</select>`;
+}else{
+input=`<input id="f_${key}" type="${type}" ${required?"required":""} ${type==="number"?'min="0"':''}>`;
+}
+return `<div class="${type==="textarea"?"field full":"field"}"><label>${label}${required?" *":""}</label>${input}</div>`;
+}).join("");
+}
+
+function saveRecord(){
+let form=$("serviceForm");
+if(!form.reportValidity())return;
+let data={};
+(fields[currentService.id]||[]).forEach(x=>{
+let el=$("f_"+x[0]);
+data[x[1]]=el?el.value.trim():"";
+});
+let record={
+id:Date.now(),
+service:currentService.name,
+serviceId:currentService.id,
+data:data,
+savedAt:new Date().toISOString()
+};
+let records=loadRecords();
+records.push(record);
+try{
+localStorage.setItem("dhpew_records",JSON.stringify(records));
+$("message").innerHTML='<div class="success">✓ ምዝገባው ተቀምጧል።</div>';
+form.reset();
+updateStats();
+}catch(e){
+$("message").innerHTML='<div class="notice">መረጃውን ማስቀመጥ አልተቻለም።</div>';
+}
+}
+
+function resetForm(){
+$("serviceForm").reset();
+$("message").innerHTML="";
+}
+
+function goHome(){
+$("formPanel").classList.add("hidden");
+$("home").classList.remove("hidden");
+currentService=null;
+updateStats();
+}
+
+function escapeHTML(s){
+return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function showRecords(){
+let r=loadRecords();
+let area=$("recordsArea");
+area.classList.remove("hidden");
+if(!r.length){
+area.innerHTML='<p class="hint">ገና ምንም ምዝገባ የለም።</p>';
+return;
+}
+area.innerHTML=`<div class="table-wrap"><table>
+<thead><tr><th>አገልግሎት</th><th>ዋና መለያ</th><th>ቀን</th></tr></thead>
+<tbody>${r.slice().reverse().map(x=>`
+<tr><td>${escapeHTML(x.service)}</td><td>${escapeHTML(Object.values(x.data)[0]||"-")}</td><td>${x.savedAt.slice(0,10)}</td></tr>
+`).join("")}</tbody></table></div>
+<div class="actions"><button class="btn danger" onclick="clearRecords()">ሁሉንም ምዝገባ አጥፋ</button></div>`;
+}
+
+function clearRecords(){
+if(!confirm("ሁሉም ምዝገባዎች ይጠፋሉ። እርግጠኛ ነዎት?"))return;
+localStorage.removeItem("dhpew_records");
+$("recordsArea").classList.add("hidden");
+updateStats();
+}
+
+function exportCSV(){
+let r=loadRecords();
+if(!r.length){alert("ለማውረድ መረጃ የለም።");return}
+let keys=[...new Set(r.flatMap(x=>Object.keys(x.data)))];
+let rows=[["Service","Saved date",...keys],...r.map(x=>[x.service,x.savedAt,...keys.map(k=>x.data[k]||"")])];
+let csv="\uFEFF"+rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
+let blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+let url=URL.createObjectURL(blob);
+let a=document.createElement("a");
+a.href=url;
+a.download="DHPEW-health-records.csv";
+a.click();
+URL.revokeObjectURL(url);
+}
+
+function net(){
+$("networkStatus").textContent=navigator.onLine?"Internet available · Local save":"Offline · Local save";
+}
+
+window.addEventListener("online",net);
+window.addEventListener("offline",net);
+drawCards();
+updateStats();
+net();
+</script>
 </body>
 </html>
