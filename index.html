@@ -183,6 +183,189 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 
 const KEY="dhpew_records";
 
+const fields={
+anc1:[
+["mother","የእናት ሙሉ ስም","text",1],
+["age","ዕድሜ","number"],
+["sex","የፆታ መለያ","select",1,["ሴት","ወንድ"]],
+["phone","ስልክ ቁጥር","tel"],
+["kebele","ቀበሌ / መንደር","text",1],
+["gravida","የእርግዝና ብዛት","number"],
+["visit","የANC 1 ቀን","date",1],
+["lmp","የመጨረሻ ወር አበባ ቀን","date"],
+["iron","Iron / Folic Acid ተሰጥቷል?","select",0,["አዎ","አይ","በፊት ወስዳለች"]],
+["medicine","የተሰጡ መድኃኒቶች","textarea"],
+["vaccine","የተሰጠ ክትባት","text"],
+["test","የላቦራቶሪ ምርመራዎች","textarea"],
+["result","የምርመራ ውጤቶች","textarea"],
+["danger","አደገኛ ምልክት አለ?","select",1,["የለም","አለ","ሪፈር ተደርጓል"]],
+["nextVisit","ቀጣይ ቀጠሮ","date"],
+["notes","ማስታወሻ","textarea"],
+["providerName","የአገልግሎት ሰጪው ስም","text",1]
+],
+
+anc4:[
+["mother","የእናት ሙሉ ስም","text",1],
+["age","ዕድሜ","number"],
+["sex","የፆታ መለያ","select",1,["ሴት","ወንድ"]],
+["phone","ስልክ ቁጥር","tel"],
+["kebele","ቀበሌ","text"],
+["visit","የANC 4 ቀን","date",1],
+["iron","Iron / Folic Acid ተሰጥቷል?","select",0,["አዎ","አይ","በፊት ወስዳለች"]],
+["medicine","የተሰጡ መድኃኒቶች","textarea"],
+["vaccine","የተሰጠ ክትባት","text"],
+["test","የተደረጉ ምርመራዎች","textarea"],
+["result","የምርመራ ውጤቶች","textarea"],
+["danger","አደገኛ ምልክት አለ?","select",1,["የለም","አለ","ሪፈር ተደርጓል"]],
+["nextVisit","ቀጣይ ቀጠሮ","date"],
+["notes","ማስታወሻ","textarea"],
+["providerName","የአገልግሎት ሰጪው ስም","text",1]
+],
+
+anc8:[
+["mother","የእናት ሙሉ ስም","text",1],
+["age","ዕድሜ","number"],
+["sex","የፆታ መለያ","select",1,["ሴት","ወንድ"]],
+["phone","ስልክ ቁጥር","tel"],
+["kebele","ቀበሌ","text"],
+["visit","የANC 8 ቀን","date",1],
+["iron","Iron / Folic Acid ተሰጥቷል?","select",0,["አዎ","አይ","በፊት ወስዳለች"]],
+["medicine","የተሰጡ መድኃኒቶች","textarea"],
+["vaccine","የተሰጠ ክትባት","text"],
+["test","የተደረጉ ምርመራዎች","textarea"],
+["result","የምርመራ ውጤቶች","textarea"],
+["danger","አደገኛ ምልክት አለ?","select",1,["የለም","አለ","ሪፈር ተደርጓል"]],
+["birthPlan","የወሊድ ዝግጅት","select",0,["ተዘጋጅቷል","አልተዘጋጀም"]],
+["nextVisit","ቀጣይ ቀጠሮ","date"],
+["notes","ማስታወሻ","textarea"],
+["providerName","የአገልግሎት ሰጪው ስም","text",1]
+],
+
+pnc:[
+["mother","የእናት ሙሉ ስም","text",1],
+["baby","የሕፃን ስም / መለያ","text"],
+["visit","የPNC ጉብኝት ቀን","date",1],
+["deliveryDate","የወሊድ ቀን","date"],
+["days","ከወሊድ በኋላ ያለፉ ቀናት","number"],
+["highRisk","ከፍተኛ አደጋ ክትትል ተደርጓል?","select",0,["አዎ","አይ"]],
+["extensionCount","የጤና ኤክስቴንሽን ክትትል ብዛት","number"],
+["findings","የክትትል ግኝቶች (Findings)","textarea"],
+["danger","የእናት አደገኛ ምልክት","select",1,["የለም","አለ","ሪፈር ተደርጓል"]],
+["babyDanger","የሕፃኑ አደገኛ ምልክት","select",0,["የለም","አለ","ሪፈር ተደርጓል"]],
+["medicine","የተሰጡ መድኃኒቶች","textarea"],
+["nextVisit","ቀጣይ ቀጠሮ","date"],
+["notes","ማስታወሻ","textarea"],
+["providerName","የአገልግሎት ሰጪው ስም","text",1]
+],
+
+delivery:[
+["mother","የእናት ሙሉ ስም","text",1],
+["age","የእናት ዕድሜ","number"],
+["date","የወሊድ ቀን","date",1],
+["place","የወሊድ ቦታ","select",1,["ጤና ጣቢያ","ሆስፒታል","ቤት","ሌላ"]],
+["attendant","ያዋለደው ባለሙያ ስም","text",1],
+["babySex","የተወለደው ሕፃን ፆታ","select",1,["ወንድ","ሴት"]],
+["birthWeight","የሕፃኑ የትውልድ ክብደት (kg)","number",1],
+["outcome","የወሊድ ውጤት","select",1,["ቀጥታ ሕያው ልጅ","Stillbirth","ሌላ"]],
+["complication","በወሊድ ጊዜ ያጋጠመ ችግር","textarea"],
+["referral","ሪፈር","select",0,["አያስፈልግም","ተደርጓል"]],
+["notes","ማስታወሻ","textarea"],
+["providerName","የአገልግሎት ሰጪው ስም","text",1]
+],
+
+model:[
+["head","የቤተሰብ አስተዳዳሪ ስም","text",1],
+["householdId","የቤተሰብ መለያ","text",1],
+["kebele","ቀበሌ","text",1],
+["members","የቤተሰብ አባላት ብዛት","number"],
+["water","ንጹህ ውሃ","select",0,["አለ","የለም"]],
+["latrine","የተሻሻለ መጸዳጃ","select",0,["አለ","የለም"]],
+["handwash","የእጅ መታጠቢያ","select",0,["አለ","የለም"]],
+["visit","የጉብኝት ቀን","date",1],
+["notes","ማስታወሻ","textarea"],
+["providerName","የአገልግሎት ሰጪው ስም","text",1]
+],
+
+latrine:[
+["head","የቤተሰብ አስተዳዳሪ ስም","text",1],
+["householdId","የቤተሰብ መለያ","text"],
+["kebele","ቀበሌ","text",1],
+["type","የመጸዳጃ ዓይነት","select",0,["Improved pit latrine","VIP latrine","ሌላ"]],
+["status","ሁኔታ","select",0,["ተጠናቋል","በግንባታ ላይ"]],
+["visit","የምርመራ ቀን","date",1],
+["notes","ማስታወሻ","textarea"],
+["providerName","የአገልግሎት ሰጪው ስም","text",1]
+],
+
+immunization:[
+["child","የሕፃን ሙሉ ስም / መለያ","text",1],
+["dob","የትውልድ ቀን","date"],
+["caregiver","የአሳዳጊ ስም","text",1],
+["date","የክትባት ቀን","date",1],
+["vaccine","የክትባት ዓይነት","select",1,["BCG","OPV 0","OPV 1","OPV 2","OPV 3","Penta 1","Penta 2","Penta 3","PCV 1","PCV 2","PCV 3","Rota 1","Rota 2","IPV","Measles","MR","HPV","Yellow Fever","ሌላ"]],
+["dose","የዶዝ ቁጥር","select",0,["Dose 0","Dose 1","Dose 2","Dose 3","Booster","ሌላ"]],
+["status","የክትባት ሁኔታ","select",1,["ተሰጥቷል","አልተሰጠም","ተላልፏል"]],
+["nextVisit","ቀጣይ የክትባት ቀጠሮ","date"],
+["adverse","Adverse Effect አለ?","select",1,["የለም","አለ"]],
+["adverseDetails","የAdverse Effect ዝርዝር","textarea"],
+["notes","ማስታወሻ","textarea"],
+["providerName","የክትባት ሰጪው ስም","text",1]
+],
+
+nutrition:[
+["person","የእናት / ሕፃን መለያ","text",1],
+["age","ዕድሜ","text"],
+["date","የክትትል ቀን","date",1],
+["childWeight","የሕፃኑ ክብደት (kg)","number"],
+["childHeight","የሕፃኑ ቁመት (cm)","number"],
+["childMUAC","የሕፃኑ MUAC (cm)","number"],
+["motherMUAC","የእናቱ MUAC (cm)","number"],
+["screening","የምርመራ ውጤት","select",0,["መደበኛ","ተጨማሪ ግምገማ","ሪፈር"]],
+["nutritionStatus","የአመጋገብ ሁኔታ","select",0,["Normal","MAM","SAM","ሌላ"]],
+["treatment","የተሰጠ ምክር / ሕክምና","textarea"],
+["nextVisit","ቀጣይ ቀጠሮ","date"],
+["notes","ማስታወሻ","textarea"],
+["providerName","የአገልግሎት ሰጪው ስም","text",1]
+],
+
+family:[
+["client","የተገልጋይ ሙሉ ስም / መለያ","text",1],
+["age","ዕድሜ","number"],
+["method","የተመረጠ የቤተሰብ ምጣኔ ዘዴ","select",1,["Implant","Jadelle","Implanon NXT","Injectable","DMPA-SC","Pills","POP","COC","Condom","IUCD / Copper T","Permanent method - Female","Permanent method - Male","LAM","Fertility Awareness","Emergency Contraception","Counseling only","ሌላ"]],
+["methodDetails","የተሰጠው ዘዴ / ዝርዝር","text"],
+["date","የአገልግሎት ቀን","date",1],
+["followup","ቀጣይ ክትትል / ቀጠሮ","date"],
+["sideEffect","የጎንዮሽ ጉዳት አለ?","select",0,["የለም","አለ"]],
+["sideEffectDetails","የጎንዮሽ ጉዳት ዝርዝር","textarea"],
+["counseling","የተሰጠ ምክር","textarea"],
+["notes","ማስታወሻ","textarea"],
+["providerName","የአገልግሎት ሰጪው ስም","text",1]
+],
+
+lab:[
+["patient","የታካሚ ሙሉ ስም / መለያ","text",1],
+["age","ዕድሜ","number"],
+["sex","ጾታ","select",0,["ሴት","ወንድ"]],
+["test","የምርመራ ዓይነት","select",1,["CBC","Malaria","TB","HIV","Urinalysis","Stool","Serology","Blood Group","Pregnancy Test","ሌላ"]],
+["result","የምርመራ ውጤት","textarea"],
+["date","የምርመራ ቀን","date",1],
+["notes","ማስታወሻ","textarea"],
+["providerName","የላቦራቶሪ ባለሙያ ስም","text",1]
+],
+
+patient:[
+["patient","ሙሉ ስም","text",1],
+["age","ዕድሜ","number"],
+["sex","ጾታ","select",1,["ሴት","ወንድ"]],
+["phone","ስልክ ቁጥር","tel"],
+["kebele","ቀበሌ","text"],
+["reason","የመጣበት ምክንያት","text",1],
+["date","የምዝገባ ቀን","date",1],
+["notes","ማስታወሻ","textarea"],
+["providerName","የመዝገብ አያያዝ ሰራተኛ ስም","text",1]
+]
+};
+
 const services=[
 {id:"anc1",icon:"🤰",name:"ANC 1",desc:"የመጀመሪያ የእርግዝና ክትትል"},
 {id:"anc4",icon:"🤱",name:"ANC 4",desc:"የእርግዝና ክትትል"},
