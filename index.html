@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="am">
 <head>
@@ -54,14 +55,13 @@ th{background:#edf5f1;color:var(--g)}
 .searchgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}
 .smallbtn{padding:7px 9px;border:0;border-radius:7px;margin:2px;font-size:11px}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
-.bulk-card{border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0;background:#fbfdfc}
-.bulk-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
-.bulk-head input{width:auto}
-.bulk-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.bulk-fields .field.full{grid-column:1/-1}
+.vaccine-card{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0;background:#fbfdfc}
+.vaccine-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.vaccine-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.vaccine-fields .field.full{grid-column:1/-1}
 @media(max-width:600px){
-form,.bulk-fields{grid-template-columns:1fr}
-.field.full,.bulk-fields .field.full{grid-column:auto}
+form,.vaccine-fields{grid-template-columns:1fr}
+.field.full,.vaccine-fields .field.full{grid-column:auto}
 .stats{grid-template-columns:repeat(3,1fr)}
 }
 </style>
@@ -71,10 +71,7 @@ form,.bulk-fields{grid-template-columns:1fr}
 <div class="top">
 <div class="brand">
 <div class="logo">✚</div>
-<div>
-<h1>DHPEW</h1>
-<div class="sub">DIGITAL HEALTH POST ETHIOPIA WERQA</div>
-</div>
+<div><h1>DHPEW</h1><div class="sub">DIGITAL HEALTH POST ETHIOPIA WERQA</div></div>
 </div>
 <div class="status" id="networkStatus">Local storage</div>
 </div>
@@ -127,8 +124,18 @@ form,.bulk-fields{grid-template-columns:1fr}
 <p id="formHint"></p>
 <div id="editingNotice" class="notice hidden">የቀድሞ መዝገብ እያስተካከሉ ነው።</div>
 <form id="serviceForm"></form>
+
+<div id="vaccineSection" class="hidden">
+<h3>💉 የክትባት ዝርዝር</h3>
+<p>የሕፃኑን መረጃ ከላይ አንድ ጊዜ ብቻ ያስገቡ። ከዚህ በታች የተሰጡትን ክትባቶች እያንዳንዳቸውን ይጨምሩ።</p>
+<div id="vaccineRows"></div>
 <div class="actions">
-<button class="btn primary" type="button" onclick="saveRecord()">መዝግብ</button>
+<button class="btn secondary" type="button" onclick="addVaccineRow()">+ ክትባት ጨምር</button>
+</div>
+</div>
+
+<div class="actions">
+<button class="btn primary" type="button" onclick="saveRecord()">መዝግብ / አስቀምጥ</button>
 <button class="btn secondary" type="button" onclick="resetForm()">ቅጹን አጽዳ</button>
 </div>
 <div id="message"></div>
@@ -137,56 +144,17 @@ form,.bulk-fields{grid-template-columns:1fr}
 <section id="recordsPanel" class="panel hidden">
 <button class="back" onclick="goHome()">← ወደ ዋና ገጽ</button>
 <h2>የተመዘገቡ መረጃዎች</h2>
-
 <div class="searchgrid">
-<div class="field">
-<label>የታካሚ ሙሉ ስም</label>
-<input id="searchName" placeholder="ስም ያስገቡ..." oninput="filterRecords()">
+<div class="field"><label>የታካሚ ሙሉ ስም</label><input id="searchName" placeholder="ስም ያስገቡ..." oninput="filterRecords()"></div>
+<div class="field"><label>የመዝገብ ቁጥር</label><input id="searchNumber" placeholder="DH-123" oninput="filterRecords()"></div>
+<div class="field"><label>አገልግሎት</label><select id="searchService" onchange="filterRecords()"><option value="">ሁሉም</option></select></div>
+<div class="field"><label>ቀን</label><input type="date" id="searchDate" onchange="filterRecords()"></div>
 </div>
-<div class="field">
-<label>የመዝገብ ቁጥር</label>
-<input id="searchNumber" placeholder="DH-123" oninput="filterRecords()">
-</div>
-<div class="field">
-<label>አገልግሎት</label>
-<select id="searchService" onchange="filterRecords()"><option value="">ሁሉም</option></select>
-</div>
-<div class="field">
-<label>ቀን</label>
-<input type="date" id="searchDate" onchange="filterRecords()">
-</div>
-</div>
-
 <div class="actions">
 <button class="btn primary" onclick="filterRecords()">ፈልግ</button>
 <button class="btn secondary" onclick="clearSearch()">አጽዳ</button>
 </div>
 <div id="recordsArea"></div>
-
-<div class="panel" style="margin-top:18px">
-<h2>💉 የክትባት መዝገቦችን በቀን ማስተካከያ</h2>
-<p>ቀን ይምረጡ፤ በዚያ ቀን የተመዘገቡ ክትባቶችን አንድ፣ ብዙ ወይም ሁሉንም መርጠው በአንድ ጊዜ ያስተካክሉ። እያንዳንዱ ሕፃን የራሱ የተለየ መረጃ ይኖረዋል።</p>
-
-<div class="searchgrid">
-<div class="field">
-<label>የክትባት ቀን</label>
-<input type="date" id="immunizationBulkDate">
-</div>
-</div>
-
-<div class="actions">
-<button class="btn primary" onclick="loadImmunizationDay()">የዚያን ቀን መዝገቦች አሳይ</button>
-<button class="btn secondary" onclick="selectAllBulk(true)">ሁሉንም ምረጥ</button>
-<button class="btn secondary" onclick="selectAllBulk(false)">ምርጫ አጽዳ</button>
-</div>
-
-<div id="bulkSelectionCount" class="hint">የተመረጡ፦ 0</div>
-<div id="immunizationBulkArea"></div>
-<div class="actions">
-<button class="btn primary" onclick="saveSelectedImmunization()">የተመረጡትን አስተካክል / አስቀምጥ</button>
-</div>
-<div id="bulkMessage"></div>
-</div>
 </section>
 
 <section id="reportPanel" class="panel hidden">
@@ -210,11 +178,10 @@ form,.bulk-fields{grid-template-columns:1fr}
 </section>
 </main>
 
-<footer>DHPEW · Digital Health Post Ethiopia Werqa · Version 2.3</footer>
+<footer>DHPEW · Digital Health Post Ethiopia Werqa · Version 3.0</footer>
 
 <script>
 "use strict";
-
 const KEY="dhpew_records";
 
 const fields={
@@ -329,13 +296,6 @@ immunization:[
 ["dob","የትውልድ ቀን","date"],
 ["caregiver","የአሳዳጊ ስም","text",1],
 ["date","የክትባት ቀን","date",1],
-["vaccine","የክትባት ዓይነት","select",1,["BCG","OPV 0","OPV 1","OPV 2","OPV 3","Penta 1","Penta 2","Penta 3","PCV 1","PCV 2","PCV 3","Rota 1","Rota 2","IPV","Measles","MR","HPV","Yellow Fever","ሌላ"]],
-["dose","የዶዝ ቁጥር","select",0,["Dose 0","Dose 1","Dose 2","Dose 3","Booster","ሌላ"]],
-["status","የክትባት ሁኔታ","select",1,["ተሰጥቷል","አልተሰጠም","ተላልፏል"]],
-["nextVisit","ቀጣይ የክትባት ቀጠሮ","date"],
-["adverse","Adverse Effect አለ?","select",1,["የለም","አለ"]],
-["adverseDetails","የAdverse Effect ዝርዝር","textarea"],
-["notes","ማስታወሻ","textarea"],
 ["providerName","የክትባት ሰጪው ስም","text",1]
 ],
 nutrition:[
@@ -404,7 +364,10 @@ const services=[
 {id:"patient",icon:"📝",name:"Patient Registration",desc:"የታካሚ ምዝገባ"}
 ];
 
-let currentService=null,editingId=null;
+const vaccineOptions=["BCG","OPV 0","OPV 1","OPV 2","OPV 3","Penta 1","Penta 2","Penta 3","PCV 1","PCV 2","PCV 3","Rota 1","Rota 2","IPV","Measles","MR","HPV","Yellow Fever","ሌላ"];
+const doseOptions=["Dose 0","Dose 1","Dose 2","Dose 3","Booster","ሌላ"];
+
+let currentService=null,editingId=null,vaccineCounter=0;
 const $=id=>document.getElementById(id);
 
 function loadRecords(){
@@ -449,6 +412,15 @@ $("serviceCards").innerHTML=services.map(s=>`<button class="service" onclick="op
 $("searchService").innerHTML='<option value="">ሁሉም</option>'+services.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
 }
 
+function makeField(x,val=""){
+const[key,label,type,required,opts]=x,safe=escapeHTML(val);
+let input="";
+if(type==="textarea")input=`<textarea id="f_${key}" ${required?"required":""}>${safe}</textarea>`;
+else if(type==="select")input=`<select id="f_${key}" ${required?"required":""}><option value="">ይምረጡ</option>${opts.map(o=>`<option value="${escapeHTML(o)}" ${val===o?"selected":""}>${escapeHTML(o)}</option>`).join("")}</select>`;
+else input=`<input id="f_${key}" type="${type}" value="${safe}" ${required?"required":""} ${type==="number"?'min="0"':''}>`;
+return `<div class="${type==="textarea"?"field full":"field"}"><label for="f_${key}">${label}${required?" *":""}</label>${input}</div>`;
+}
+
 function openService(id,record=null){
 currentService=services.find(s=>s.id===id);
 if(!currentService)return;
@@ -461,58 +433,150 @@ $("formTitle").textContent=currentService.name+(record?" – ማስተካከያ"
 $("formHint").textContent=currentService.desc;
 $("editingNotice").classList.toggle("hidden",!record);
 $("message").innerHTML="";
-$("serviceForm").innerHTML=(fields[id]||[]).map(x=>{
-const[key,label,type,required,opts]=x,val=record?.data?.[label]??"",safe=escapeHTML(val);
-let input="";
-if(type==="textarea")input=`<textarea id="f_${key}" ${required?"required":""}>${safe}</textarea>`;
-else if(type==="select")input=`<select id="f_${key}" ${required?"required":""}><option value="">ይምረጡ</option>${opts.map(o=>`<option value="${escapeHTML(o)}" ${val===o?"selected":""}>${escapeHTML(o)}</option>`).join("")}</select>`;
-else input=`<input id="f_${key}" type="${type}" value="${safe}" ${required?"required":""} ${type==="number"?'min="0"':''}>`;
-return `<div class="${type==="textarea"?"field full":"field"}"><label for="f_${key}">${label}${required?" *":""}</label>${input}</div>`;
-}).join("");
+$("serviceForm").innerHTML=(fields[id]||[]).map(x=>makeField(x,record?.data?.[x[1]]??"")).join("");
+
+$("vaccineSection").classList.toggle("hidden",id!=="immunization");
+$("vaccineRows").innerHTML="";
+vaccineCounter=0;
+
+if(id==="immunization"){
+let vaccines=record?.vaccines;
+
+// አሮጌውን አንድ-ክትባት መዝገብ ወደ አዲሱ ፎርም ማምጣት
+if(!Array.isArray(vaccines)&&record?.data?.["የክትባት ዓይነት"]){
+vaccines=[{
+vaccine:record.data["የክትባት ዓይነት"],
+dose:record.data["የዶዝ ቁጥር"],
+status:record.data["የክትባት ሁኔታ"],
+nextVisit:record.data["ቀጣይ የክትባት ቀጠሮ"],
+adverse:record.data["Adverse Effect አለ?"],
+adverseDetails:record.data["የAdverse Effect ዝርዝር"],
+notes:record.data["ማስታወሻ"]
+}];
+}
+if(vaccines?.length)vaccines.forEach(v=>addVaccineRow(v));
+else addVaccineRow();
+}
+}
+
+function addVaccineRow(v={}){
+const id=++vaccineCounter;
+const box=document.createElement("div");
+box.className="vaccine-card";
+box.id="vaccineRow_"+id;
+
+function options(arr,value){
+return '<option value="">ይምረጡ</option>'+arr.map(o=>`<option value="${escapeHTML(o)}" ${value===o?"selected":""}>${escapeHTML(o)}</option>`).join("");
+}
+
+box.innerHTML=`
+<div class="vaccine-head">
+<strong>ክትባት ${id}</strong>
+<button type="button" class="smallbtn danger" onclick="removeVaccineRow(${id})">ይህን ክትባት አጥፋ</button>
+</div>
+<div class="vaccine-fields">
+<div class="field"><label>የክትባት ዓይነት *</label><select class="vaccine-type" required>${options(vaccineOptions,v.vaccine||"")}</select></div>
+<div class="field"><label>የዶዝ ቁጥር</label><select class="vaccine-dose">${options(doseOptions,v.dose||"")}</select></div>
+<div class="field"><label>የክትባት ሁኔታ *</label><select class="vaccine-status" required>${options(["ተሰጥቷል","አልተሰጠም","ተላልፏል"],v.status||"")}</select></div>
+<div class="field"><label>ቀጣይ የክትባት ቀጠሮ</label><input type="date" class="vaccine-next" value="${escapeHTML(v.nextVisit||"")}"></div>
+<div class="field"><label>Adverse Effect አለ?</label><select class="vaccine-adverse">${options(["የለም","አለ"],v.adverse||"የለም")}</select></div>
+<div class="field full"><label>የAdverse Effect ዝርዝር</label><textarea class="vaccine-adverse-details">${escapeHTML(v.adverseDetails||"")}</textarea></div>
+<div class="field full"><label>ማስታወሻ</label><textarea class="vaccine-notes">${escapeHTML(v.notes||"")}</textarea></div>
+</div>`;
+$("vaccineRows").appendChild(box);
+}
+
+function removeVaccineRow(id){
+const row=$("vaccineRow_"+id);
+if(row&&confirm("ይህን የክትባት መስመር ማጥፋት ይፈልጋሉ?"))row.remove();
+}
+
+function readVaccineRows(){
+return [...$("vaccineRows").children].map(row=>({
+vaccine:row.querySelector(".vaccine-type").value,
+dose:row.querySelector(".vaccine-dose").value,
+status:row.querySelector(".vaccine-status").value,
+nextVisit:row.querySelector(".vaccine-next").value,
+adverse:row.querySelector(".vaccine-adverse").value,
+adverseDetails:row.querySelector(".vaccine-adverse-details").value.trim(),
+notes:row.querySelector(".vaccine-notes").value.trim()
+}));
 }
 
 function saveRecord(){
 if(!currentService)return;
 const form=$("serviceForm");
 if(!form.reportValidity())return;
+
 const data={};
 (fields[currentService.id]||[]).forEach(x=>{
 const el=$("f_"+x[0]);
 data[x[1]]=el?el.value.trim():"";
 });
+
+let vaccines=[];
+if(currentService.id==="immunization"){
+vaccines=readVaccineRows();
+if(!vaccines.length||vaccines.some(v=>!v.vaccine||!v.status)){
+$("message").innerHTML='<div class="notice">እባክዎ ቢያንስ አንድ ክትባት ያስገቡ። የክትባት ዓይነትና ሁኔታ መምረጥ አለብዎት።</div>';
+return;
+}
+}
+
 try{
 let records=loadRecords();
 if(editingId!==null){
 const i=records.findIndex(r=>r.id===editingId);
 if(i<0)throw Error("Record not found");
-records[i]={...records[i],data,updatedAt:new Date().toISOString()};
+records[i]={...records[i],data,...(currentService.id==="immunization"?{vaccines}:{}),updatedAt:new Date().toISOString()};
 saveAll(records);
 $("message").innerHTML='<div class="success">✓ መረጃው ተስተካክሏል።</div>';
 editingId=null;
 $("editingNotice").classList.add("hidden");
 $("formTitle").textContent=currentService.name+" – ምዝገባ";
 }else{
-const id=Date.now(),r={id,recordNo:"DH-"+id.toString().slice(-8),service:currentService.name,serviceId:currentService.id,data,savedAt:new Date().toISOString()};
+const id=Date.now();
+const r={
+id,
+recordNo:"DH-"+id.toString().slice(-8),
+service:currentService.name,
+serviceId:currentService.id,
+data,
+...(currentService.id==="immunization"?{vaccines}:{}),
+savedAt:new Date().toISOString()
+};
 records.push(r);
 saveAll(records);
 $("message").innerHTML='<div class="success">✓ ምዝገባው ተቀምጧል።<br>የመዝገብ ቁጥር፦ '+r.recordNo+'</div>';
 }
 form.reset();
+if(currentService.id==="immunization"){
+$("vaccineRows").innerHTML="";
+vaccineCounter=0;
+addVaccineRow();
+}
 updateStats();
 }catch(e){
 console.error(e);
-$("message").innerHTML='<div class="notice">ስህተት፦ መረጃውን ማስቀመጥ አልተቻለም። Backup አድርገው የስልኩን የማከማቻ ቦታ ያረጋግጡ።</div>';
+$("message").innerHTML='<div class="notice">ስህተት፦ መረጃውን ማስቀመጥ አልተቻለም። Backup አድርገው የማከማቻ ቦታውን ያረጋግጡ።</div>';
 }
 }
 
-function resetForm(){$("serviceForm").reset();$("message").innerHTML=""}
+function resetForm(){
+$("serviceForm").reset();
+$("message").innerHTML="";
+if(currentService?.id==="immunization"){
+$("vaccineRows").innerHTML="";
+vaccineCounter=0;
+addVaccineRow();
+}
+}
 
 function showRecords(){
 $("home").classList.add("hidden");
 $("formPanel").classList.add("hidden");
 $("reportPanel").classList.add("hidden");
 $("recordsPanel").classList.remove("hidden");
-if(!$("immunizationBulkDate").value)$("immunizationBulkDate").value=localDate(new Date());
 filterRecords();
 }
 
@@ -521,7 +585,7 @@ const name=$("searchName").value.trim().toLowerCase();
 const number=$("searchNumber").value.trim().toLowerCase();
 const service=$("searchService").value;
 const date=$("searchDate").value;
-let r=loadRecords().filter(x=>{
+const r=loadRecords().filter(x=>{
 const n=recordNumber(x).toLowerCase(),p=patientName(x).toLowerCase();
 return(!name||p.includes(name))&&(!number||n.includes(number)||String(x.id).includes(number))&&(!service||x.serviceId===service)&&(!date||recordDate(x)===date);
 });
@@ -534,13 +598,53 @@ if(!records.length){
 area.innerHTML='<p class="hint">የተፈለገው መረጃ አልተገኘም።</p>';
 return;
 }
-area.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Record Number</th><th>የታካሚ ስም</th><th>አገልግሎት</th><th>ዋና መረጃ</th><th>ቀን</th><th>ድርጊት</th></tr></thead><tbody>${records.slice().reverse().map(r=>`<tr><td><strong>${escapeHTML(recordNumber(r))}</strong></td><td>${escapeHTML(patientName(r))}</td><td>${escapeHTML(r.service||"")}</td><td>${escapeHTML(Object.values(r.data||{})[0]||"-")}</td><td>${escapeHTML(recordDate(r))}</td><td><button class="smallbtn secondary" onclick="viewRecord(${Number(r.id)})">አሳይ</button><button class="smallbtn secondary" onclick="editRecord(${Number(r.id)})">አስተካክል</button><button class="smallbtn danger" onclick="deleteRecord(${Number(r.id)})">አጥፋ</button></td></tr>`).join("")}</tbody></table></div>`;
+area.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Record Number</th><th>የታካሚ ስም</th><th>አገልግሎት</th><th>ዋና መረጃ</th><th>ቀን</th><th>ድርጊት</th></tr></thead><tbody>${records.slice().reverse().map(r=>`<tr>
+<td><strong>${escapeHTML(recordNumber(r))}</strong></td>
+<td>${escapeHTML(patientName(r))}</td>
+<td>${escapeHTML(r.service||"")}</td>
+<td>${escapeHTML(Object.values(r.data||{})[0]||"-")}${r.serviceId==="immunization"?`<br><strong>ክትባቶች፦ ${Array.isArray(r.vaccines)?r.vaccines.length:(r.data?.["የክትባት ዓይነት"]?1:0)}</strong>`:""}</td>
+<td>${escapeHTML(recordDate(r))}</td>
+<td>
+<button class="smallbtn secondary" onclick="viewRecord(${Number(r.id)})">አሳይ</button>
+<button class="smallbtn secondary" onclick="editRecord(${Number(r.id)})">አስተካክል</button>
+<button class="smallbtn danger" onclick="deleteRecord(${Number(r.id)})">አጥፋ</button>
+</td></tr>`).join("")}</tbody></table></div>`;
 }
 
 function viewRecord(id){
 const r=loadRecords().find(x=>x.id===id);
 if(!r)return alert("መዝገቡ አልተገኘም።");
-alert("መዝገብ ቁጥር፦ "+recordNumber(r)+"\nየታካሚ ስም፦ "+patientName(r)+"\nአገልግሎት፦ "+r.service+"\nቀን፦ "+recordDate(r)+"\n\n"+Object.entries(r.data||{}).map(([k,v])=>k+" : "+v).join("\n"));
+let details=Object.entries(r.data||{}).map(([k,v])=>k+" : "+v).join("\n");
+
+if(r.serviceId==="immunization"){
+let vaccines=r.vaccines||[];
+if(!vaccines.length&&r.data?.["የክትባት ዓይነት"]){
+vaccines=[{
+vaccine:r.data["የክትባት ዓይነት"],
+dose:r.data["የዶዝ ቁጥር"],
+status:r.data["የክትባት ሁኔታ"],
+nextVisit:r.data["ቀጣይ የክትባት ቀጠሮ"],
+adverse:r.data["Adverse Effect አለ?"],
+adverseDetails:r.data["የAdverse Effect ዝርዝር"],
+notes:r.data["ማስታወሻ"]
+}];
+}
+details+="\n\n💉 የክትባት ዝርዝር\n";
+details+=vaccines.map((v,i)=>
+(i+1)+". "+(v.vaccine||"")+" — "+(v.status||"")+
+(v.dose?" — "+v.dose:"")+
+(v.nextVisit?"\nቀጣይ ቀጠሮ: "+v.nextVisit:"")+
+(v.adverse?"\nAdverse Effect: "+v.adverse:"")+
+(v.adverseDetails?"\nዝርዝር: "+v.adverseDetails:"")+
+(v.notes?"\nማስታወሻ: "+v.notes:"")
+).join("\n\n");
+}
+
+alert("መዝገብ ቁጥር፦ "+recordNumber(r)+
+"\nየታካሚ ስም፦ "+patientName(r)+
+"\nአገልግሎት፦ "+r.service+
+"\nቀን፦ "+recordDate(r)+
+"\n\n"+details);
 }
 
 function editRecord(id){
@@ -555,7 +659,6 @@ try{
 saveAll(loadRecords().filter(x=>x.id!==id));
 updateStats();
 filterRecords();
-loadImmunizationDay();
 }catch(e){alert("መዝገቡን ማጥፋት አልተቻለም።")}
 }
 
@@ -566,96 +669,6 @@ $("searchService").value="";
 $("searchDate").value="";
 filterRecords();
 }
-
-/* የክትባት ብዙ መዝገቦች ማስተካከያ */
-
-function renderBulkInput(record,field){
-const[key,label,type,required,opts]=field;
-const val=record.data?.[label]??"";
-const id=`bulk_${record.id}_${key}`;
-const safe=escapeHTML(val);
-let control="";
-if(type==="textarea"){
-control=`<textarea id="${id}" ${required?"required":""}>${safe}</textarea>`;
-}else if(type==="select"){
-control=`<select id="${id}" ${required?"required":""}><option value="">ይምረጡ</option>${opts.map(o=>`<option value="${escapeHTML(o)}" ${val===o?"selected":""}>${escapeHTML(o)}</option>`).join("")}</select>`;
-}else{
-control=`<input id="${id}" type="${type}" value="${safe}" ${required?"required":""} ${type==="number"?'min="0"':''}>`;
-}
-return `<div class="field ${type==="textarea"?"full":""}"><label for="${id}">${label}${required?" *":""}</label>${control}</div>`;
-}
-
-function loadImmunizationDay(){
-const date=$("immunizationBulkDate").value;
-const area=$("immunizationBulkArea");
-$("bulkMessage").innerHTML="";
-if(!date){
-area.innerHTML='<p class="notice">እባክዎ የክትባት ቀን ይምረጡ።</p>';
-return;
-}
-const rows=loadRecords().filter(r=>r.serviceId==="immunization"&&recordDate(r)===date);
-if(!rows.length){
-area.innerHTML='<p class="hint">በዚህ ቀን የተመዘገበ የክትባት መረጃ የለም።</p>';
-updateBulkSelectionCount();
-return;
-}
-area.innerHTML=rows.map(r=>`<div class="bulk-card" data-bulk-record="${Number(r.id)}"><div class="bulk-head"><input type="checkbox" class="bulk-select" id="bulkSelect_${Number(r.id)}" onchange="updateBulkSelectionCount()"><label for="bulkSelect_${Number(r.id)}"><strong>${escapeHTML(patientName(r))}</strong> · ${escapeHTML(recordNumber(r))} · ${escapeHTML(r.data?.["የክትባት ዓይነት"]||"")}</label></div><div class="bulk-fields">${fields.immunization.map(f=>renderBulkInput(r,f)).join("")}</div></div>`).join("");
-updateBulkSelectionCount();
-}
-
-function selectAllBulk(flag){
-document.querySelectorAll(".bulk-select").forEach(c=>c.checked=flag);
-updateBulkSelectionCount();
-}
-
-function updateBulkSelectionCount(){
-const n=document.querySelectorAll(".bulk-select:checked").length;
-$("bulkSelectionCount").textContent="የተመረጡ፦ "+n;
-}
-
-function saveSelectedImmunization(){
-const selected=[...document.querySelectorAll(".bulk-select:checked")].map(c=>Number(c.id.replace("bulkSelect_","")));
-if(!selected.length){
-alert("እባክዎ ቢያንስ አንድ መዝገብ ይምረጡ።");
-return;
-}
-const updated=loadRecords();
-const requiredMissing=[];
-for(const id of selected){
-for(const f of fields.immunization){
-if(f[3]){
-const el=$(`bulk_${id}_${f[0]}`);
-if(!el||!el.value.trim())requiredMissing.push((el?.previousElementSibling?.textContent||f[1])+" ("+id+")");
-}
-}
-}
-if(requiredMissing.length){
-alert("አስፈላጊ መረጃ ያልተሞላ አለ። እባክዎ የተመረጡትን ቅጾች ያሟሉ።");
-return;
-}
-try{
-for(const id of selected){
-const index=updated.findIndex(r=>r.id===id&&r.serviceId==="immunization");
-if(index<0)continue;
-const data={...updated[index].data};
-for(const f of fields.immunization){
-const el=$(`bulk_${id}_${f[0]}`);
-if(el)data[f[1]]=el.value.trim();
-}
-updated[index]={...updated[index],data,updatedAt:new Date().toISOString()};
-}
-saveAll(updated);
-$("bulkMessage").innerHTML=`<div class="success">✓ ${selected.length} የክትባት መዝገቦች በአንድ ጊዜ ተስተካክለዋል።</div>`;
-updateStats();
-filterRecords();
-loadImmunizationDay();
-}catch(e){
-console.error(e);
-$("bulkMessage").innerHTML='<div class="notice">መረጃዎቹን ማስቀመጥ አልተቻለም። Backup አድርገው ይሞክሩ።</div>';
-}
-}
-
-/* ሪፖርት */
 
 function showReports(){
 $("home").classList.add("hidden");
@@ -689,15 +702,16 @@ const r=loadRecords().filter(x=>recordDate(x)>=start&&recordDate(x)<=end);
 const counts={};
 services.forEach(s=>counts[s.id]=0);
 r.forEach(x=>{if(counts[x.serviceId]!==undefined)counts[x.serviceId]++});
-$("reportArea").innerHTML=`<div class="success">የሪፖርት ጊዜ፦ ${start} እስከ ${end}<br>ጠቅላላ ምዝገባ፦ <b>${r.length}</b></div><div class="table-wrap"><table><thead><tr><th>አገልግሎት</th><th>የምዝገባ ብዛት</th></tr></thead><tbody>${services.map(s=>`<tr><td>${s.name}</td><td>${counts[s.id]}</td></tr>`).join("")}</tbody></table></div>`;
+$("reportArea").innerHTML=`<div class="success">የሪፖርት ጊዜ፦ ${start} እስከ ${end}<br>ጠቅላላ ምዝገባ፦ <b>${r.length}</b></div>
+<div class="table-wrap"><table><thead><tr><th>አገልግሎት</th><th>የምዝገባ ብዛት</th></tr></thead><tbody>
+${services.map(s=>`<tr><td>${s.name}</td><td>${counts[s.id]}</td></tr>`).join("")}
+</tbody></table></div>`;
 }
-
-/* Backup እና CSV */
 
 function backupJSON(){
 try{
 const records=loadRecords();
-const backup={system:"DHPEW",version:"2.3",createdAt:new Date().toISOString(),recordCount:records.length,records};
+const backup={system:"DHPEW",version:"3.0",createdAt:new Date().toISOString(),recordCount:records.length,records};
 downloadBlob(new Blob([JSON.stringify(backup,null,2)],{type:"application/json"}),"DHPEW-backup-"+localDate(new Date())+".json");
 alert("JSON Backup ተዘጋጅቷል። ፋይሉን በስልክዎ ያስቀምጡ።");
 }catch(e){alert("Backup ማውረድ አልተቻለም።")}
@@ -729,8 +743,12 @@ const r=loadRecords();
 if(!r.length)return alert("ለማውረድ መረጃ የለም።");
 const keys=[...new Set(r.flatMap(x=>Object.keys(x.data||{})))];
 const rows=[
-["Record Number","Patient Name","Service","Date","Saved At",...keys],
-...r.map(x=>[recordNumber(x),patientName(x),x.service,recordDate(x),x.savedAt,...keys.map(k=>x.data?.[k]||"")])
+["Record Number","Patient Name","Service","Date","Saved At",...keys,"Vaccines"],
+...r.map(x=>[
+recordNumber(x),patientName(x),x.service,recordDate(x),x.savedAt,
+...keys.map(k=>x.data?.[k]||""),
+x.serviceId==="immunization"?(x.vaccines||[]).map(v=>`${v.vaccine}: ${v.status}; Dose: ${v.dose||""}; Next: ${v.nextVisit||""}`).join(" | "):""
+])
 ];
 const csv="\uFEFF"+rows.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\n");
 downloadBlob(new Blob([csv],{type:"text/csv;charset=utf-8"}),"DHPEW-report.csv");
