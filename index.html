@@ -54,7 +54,16 @@ th{background:#edf5f1;color:var(--g)}
 .searchgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}
 .smallbtn{padding:7px 9px;border:0;border-radius:7px;margin:2px;font-size:11px}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
-@media(max-width:600px){form{grid-template-columns:1fr}.field.full{grid-column:auto}.stats{grid-template-columns:repeat(3,1fr)}}
+.bulk-card{border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0;background:#fbfdfc}
+.bulk-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.bulk-head input{width:auto}
+.bulk-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.bulk-fields .field.full{grid-column:1/-1}
+@media(max-width:600px){
+form,.bulk-fields{grid-template-columns:1fr}
+.field.full,.bulk-fields .field.full{grid-column:auto}
+.stats{grid-template-columns:repeat(3,1fr)}
+}
 </style>
 </head>
 <body>
@@ -81,7 +90,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 <div class="stats">
 <div class="stat"><b id="totalRecords">0</b><span>ጠቅላላ ምዝገባ</span></div>
 <div class="stat"><b id="todayRecords">0</b><span>የዛሬ ምዝገባ</span></div>
-<div class="stat"><b id="serviceCount">12</b><span>አገልግሎቶች</span></div>
+<div class="stat"><b>12</b><span>አገልግሎቶች</span></div>
 </div>
 
 <div class="section-title"><h3>የጤና አገልግሎቶች</h3></div>
@@ -128,17 +137,56 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 <section id="recordsPanel" class="panel hidden">
 <button class="back" onclick="goHome()">← ወደ ዋና ገጽ</button>
 <h2>የተመዘገቡ መረጃዎች</h2>
+
 <div class="searchgrid">
-<div class="field"><label>የታካሚ ሙሉ ስም</label><input id="searchName" placeholder="ስም ያስገቡ..." oninput="filterRecords()"></div>
-<div class="field"><label>የመዝገብ ቁጥር (Record Number)</label><input id="searchNumber" placeholder="ለምሳሌ DH-123" oninput="filterRecords()"></div>
-<div class="field"><label>አገልግሎት</label><select id="searchService" onchange="filterRecords()"><option value="">ሁሉም</option></select></div>
-<div class="field"><label>ቀን</label><input type="date" id="searchDate" onchange="filterRecords()"></div>
+<div class="field">
+<label>የታካሚ ሙሉ ስም</label>
+<input id="searchName" placeholder="ስም ያስገቡ..." oninput="filterRecords()">
 </div>
+<div class="field">
+<label>የመዝገብ ቁጥር</label>
+<input id="searchNumber" placeholder="DH-123" oninput="filterRecords()">
+</div>
+<div class="field">
+<label>አገልግሎት</label>
+<select id="searchService" onchange="filterRecords()"><option value="">ሁሉም</option></select>
+</div>
+<div class="field">
+<label>ቀን</label>
+<input type="date" id="searchDate" onchange="filterRecords()">
+</div>
+</div>
+
 <div class="actions">
 <button class="btn primary" onclick="filterRecords()">ፈልግ</button>
 <button class="btn secondary" onclick="clearSearch()">አጽዳ</button>
 </div>
 <div id="recordsArea"></div>
+
+<div class="panel" style="margin-top:18px">
+<h2>💉 የክትባት መዝገቦችን በቀን ማስተካከያ</h2>
+<p>ቀን ይምረጡ፤ በዚያ ቀን የተመዘገቡ ክትባቶችን አንድ፣ ብዙ ወይም ሁሉንም መርጠው በአንድ ጊዜ ያስተካክሉ። እያንዳንዱ ሕፃን የራሱ የተለየ መረጃ ይኖረዋል።</p>
+
+<div class="searchgrid">
+<div class="field">
+<label>የክትባት ቀን</label>
+<input type="date" id="immunizationBulkDate">
+</div>
+</div>
+
+<div class="actions">
+<button class="btn primary" onclick="loadImmunizationDay()">የዚያን ቀን መዝገቦች አሳይ</button>
+<button class="btn secondary" onclick="selectAllBulk(true)">ሁሉንም ምረጥ</button>
+<button class="btn secondary" onclick="selectAllBulk(false)">ምርጫ አጽዳ</button>
+</div>
+
+<div id="bulkSelectionCount" class="hint">የተመረጡ፦ 0</div>
+<div id="immunizationBulkArea"></div>
+<div class="actions">
+<button class="btn primary" onclick="saveSelectedImmunization()">የተመረጡትን አስተካክል / አስቀምጥ</button>
+</div>
+<div id="bulkMessage"></div>
+</div>
 </section>
 
 <section id="reportPanel" class="panel hidden">
@@ -147,7 +195,10 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 <div class="field">
 <label>የሪፖርት ዓይነት</label>
 <select id="reportPeriod" onchange="makeReport()">
-<option value="day">ዕለታዊ</option><option value="week">ሳምንታዊ</option><option value="month">ወርሃዊ</option><option value="year">ዓመታዊ</option>
+<option value="day">ዕለታዊ</option>
+<option value="week">ሳምንታዊ</option>
+<option value="month">ወርሃዊ</option>
+<option value="year">ዓመታዊ</option>
 </select>
 </div>
 <div class="field" style="margin-top:10px">
@@ -159,14 +210,13 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
 </section>
 </main>
 
-<footer>DHPEW · Digital Health Post Ethiopia Werqa · Version 2.2</footer>
+<footer>DHPEW · Digital Health Post Ethiopia Werqa · Version 2.3</footer>
 
 <script>
 "use strict";
 
 const KEY="dhpew_records";
 
-/* 12ቱ የጤና አገልግሎቶች የመረጃ መሙያ ቅጾች */
 const fields={
 anc1:[
 ["mother","የእናት ሙሉ ስም","text",1],
@@ -354,22 +404,20 @@ const services=[
 {id:"patient",icon:"📝",name:"Patient Registration",desc:"የታካሚ ምዝገባ"}
 ];
 
-let currentService=null;
-let editingId=null;
+let currentService=null,editingId=null;
 const $=id=>document.getElementById(id);
 
 function loadRecords(){
 try{
 const v=JSON.parse(localStorage.getItem(KEY)||"[]");
 return Array.isArray(v)?v:[];
-}catch(e){console.error(e);return [];}
+}catch(e){console.error(e);return[]}
 }
 
 function saveAll(records){
 localStorage.setItem(KEY,JSON.stringify(records));
-const check=JSON.parse(localStorage.getItem(KEY)||"null");
-if(!Array.isArray(check)||check.length!==records.length)
-throw new Error("Storage verification failed");
+const c=JSON.parse(localStorage.getItem(KEY)||"null");
+if(!Array.isArray(c)||c.length!==records.length)throw Error("Storage verification failed");
 }
 
 function localDate(d){
@@ -377,76 +425,49 @@ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.g
 }
 
 function recordDate(r){
-const defs=fields[r.serviceId]||[];
-for(const f of defs){
+for(const f of fields[r.serviceId]||[]){
 if(f[2]==="date"&&r.data&&r.data[f[1]])return r.data[f[1]];
 }
-return (r.savedAt||"").slice(0,10);
+return(r.savedAt||"").slice(0,10);
 }
 
-function recordNumber(r){
-return r.recordNo||("DH-"+String(r.id).slice(-8));
-}
+function recordNumber(r){return r.recordNo||("DH-"+String(r.id).slice(-8))}
+function patientName(r){return String(Object.values(r.data||{})[0]||"").trim()||"—"}
 
-/* የመጀመሪያው የቅጽ መረጃ የሰው ስም ነው */
-function patientName(r){
-const values=Object.values(r.data||{});
-return String(values[0]||"").trim()||"—";
+function escapeHTML(s){
+return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
 function updateStats(){
-const r=loadRecords();
-const today=localDate(new Date());
+const r=loadRecords(),today=localDate(new Date());
 $("totalRecords").textContent=r.length;
 $("todayRecords").textContent=r.filter(x=>(x.savedAt||"").slice(0,10)===today).length;
 }
 
 function drawCards(){
-$("serviceCards").innerHTML=services.map(s=>`
-<button class="service" onclick="openService('${s.id}')">
-<span class="ico">${s.icon}</span>
-<strong>${s.name}</strong><small>${s.desc}</small>
-</button>`).join("");
-
-$("searchService").innerHTML='<option value="">ሁሉም</option>'+
-services.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
+$("serviceCards").innerHTML=services.map(s=>`<button class="service" onclick="openService('${s.id}')"><span class="ico">${s.icon}</span><strong>${s.name}</strong><small>${s.desc}</small></button>`).join("");
+$("searchService").innerHTML='<option value="">ሁሉም</option>'+services.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
 }
 
 function openService(id,record=null){
 currentService=services.find(s=>s.id===id);
 if(!currentService)return;
-
 editingId=record?record.id:null;
 $("home").classList.add("hidden");
 $("recordsPanel").classList.add("hidden");
 $("reportPanel").classList.add("hidden");
 $("formPanel").classList.remove("hidden");
-
 $("formTitle").textContent=currentService.name+(record?" – ማስተካከያ":" – ምዝገባ");
 $("formHint").textContent=currentService.desc;
 $("editingNotice").classList.toggle("hidden",!record);
 $("message").innerHTML="";
-
-const f=fields[id]||[];
-$("serviceForm").innerHTML=f.map(x=>{
-const [key,label,type,required,opts]=x;
-const val=record?.data?.[label]??"";
-const safeVal=escapeHTML(val);
+$("serviceForm").innerHTML=(fields[id]||[]).map(x=>{
+const[key,label,type,required,opts]=x,val=record?.data?.[label]??"",safe=escapeHTML(val);
 let input="";
-
-if(type==="textarea"){
-input=`<textarea id="f_${key}" ${required?"required":""}>${safeVal}</textarea>`;
-}else if(type==="select"){
-input=`<select id="f_${key}" ${required?"required":""}>
-<option value="">ይምረጡ</option>
-${opts.map(o=>`<option value="${escapeHTML(o)}" ${val===o?"selected":""}>${escapeHTML(o)}</option>`).join("")}
-</select>`;
-}else{
-input=`<input id="f_${key}" type="${type}" value="${safeVal}" ${required?"required":""} ${type==="number"?'min="0"':''}>`;
-}
-
-return `<div class="${type==="textarea"?"field full":"field"}">
-<label for="f_${key}">${label}${required?" *":""}</label>${input}</div>`;
+if(type==="textarea")input=`<textarea id="f_${key}" ${required?"required":""}>${safe}</textarea>`;
+else if(type==="select")input=`<select id="f_${key}" ${required?"required":""}><option value="">ይምረጡ</option>${opts.map(o=>`<option value="${escapeHTML(o)}" ${val===o?"selected":""}>${escapeHTML(o)}</option>`).join("")}</select>`;
+else input=`<input id="f_${key}" type="${type}" value="${safe}" ${required?"required":""} ${type==="number"?'min="0"':''}>`;
+return `<div class="${type==="textarea"?"field full":"field"}"><label for="f_${key}">${label}${required?" *":""}</label>${input}</div>`;
 }).join("");
 }
 
@@ -454,43 +475,28 @@ function saveRecord(){
 if(!currentService)return;
 const form=$("serviceForm");
 if(!form.reportValidity())return;
-
 const data={};
 (fields[currentService.id]||[]).forEach(x=>{
 const el=$("f_"+x[0]);
 data[x[1]]=el?el.value.trim():"";
 });
-
 try{
 let records=loadRecords();
-
 if(editingId!==null){
-const index=records.findIndex(r=>r.id===editingId);
-if(index<0)throw new Error("Record not found");
-
-records[index]={...records[index],data:data,updatedAt:new Date().toISOString()};
+const i=records.findIndex(r=>r.id===editingId);
+if(i<0)throw Error("Record not found");
+records[i]={...records[i],data,updatedAt:new Date().toISOString()};
 saveAll(records);
-
 $("message").innerHTML='<div class="success">✓ መረጃው ተስተካክሏል።</div>';
 editingId=null;
 $("editingNotice").classList.add("hidden");
 $("formTitle").textContent=currentService.name+" – ምዝገባ";
 }else{
-const id=Date.now();
-const record={
-id:id,
-recordNo:"DH-"+id.toString().slice(-8),
-service:currentService.name,
-serviceId:currentService.id,
-data:data,
-savedAt:new Date().toISOString()
-};
-records.push(record);
+const id=Date.now(),r={id,recordNo:"DH-"+id.toString().slice(-8),service:currentService.name,serviceId:currentService.id,data,savedAt:new Date().toISOString()};
+records.push(r);
 saveAll(records);
-
-$("message").innerHTML='<div class="success">✓ ምዝገባው ተቀምጧል።<br>የመዝገብ ቁጥር፦ '+record.recordNo+'</div>';
+$("message").innerHTML='<div class="success">✓ ምዝገባው ተቀምጧል።<br>የመዝገብ ቁጥር፦ '+r.recordNo+'</div>';
 }
-
 form.reset();
 updateStats();
 }catch(e){
@@ -499,22 +505,14 @@ $("message").innerHTML='<div class="notice">ስህተት፦ መረጃውን ማ�
 }
 }
 
-function resetForm(){
-$("serviceForm").reset();
-$("message").innerHTML="";
-}
-
-function escapeHTML(s){
-return String(s??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-}[c]));
-}
+function resetForm(){$("serviceForm").reset();$("message").innerHTML=""}
 
 function showRecords(){
 $("home").classList.add("hidden");
 $("formPanel").classList.add("hidden");
 $("reportPanel").classList.add("hidden");
 $("recordsPanel").classList.remove("hidden");
+if(!$("immunizationBulkDate").value)$("immunizationBulkDate").value=localDate(new Date());
 filterRecords();
 }
 
@@ -523,15 +521,9 @@ const name=$("searchName").value.trim().toLowerCase();
 const number=$("searchNumber").value.trim().toLowerCase();
 const service=$("searchService").value;
 const date=$("searchDate").value;
-
-let r=loadRecords();
-r=r.filter(x=>{
-const n=recordNumber(x).toLowerCase();
-const person=patientName(x).toLowerCase();
-return (!name||person.includes(name))
-&&(!number||n.includes(number)||String(x.id).includes(number))
-&&(!service||x.serviceId===service)
-&&(!date||recordDate(x)===date);
+let r=loadRecords().filter(x=>{
+const n=recordNumber(x).toLowerCase(),p=patientName(x).toLowerCase();
+return(!name||p.includes(name))&&(!number||n.includes(number)||String(x.id).includes(number))&&(!service||x.serviceId===service)&&(!date||recordDate(x)===date);
 });
 renderRecords(r);
 }
@@ -542,37 +534,13 @@ if(!records.length){
 area.innerHTML='<p class="hint">የተፈለገው መረጃ አልተገኘም።</p>';
 return;
 }
-
-area.innerHTML=`<div class="table-wrap"><table>
-<thead><tr>
-<th>Record Number</th><th>የታካሚ ስም</th>
-<th>አገልግሎት</th><th>ዋና መረጃ</th><th>ቀን</th><th>ድርጊት</th>
-</tr></thead>
-<tbody>${records.slice().reverse().map(r=>{
-const first=Object.values(r.data||{})[0]||"-";
-return `<tr>
-<td><strong>${escapeHTML(recordNumber(r))}</strong></td>
-<td>${escapeHTML(patientName(r))}</td>
-<td>${escapeHTML(r.service||"")}</td>
-<td>${escapeHTML(first)}</td>
-<td>${escapeHTML(recordDate(r))}</td>
-<td>
-<button class="smallbtn secondary" onclick="viewRecord(${Number(r.id)})">አሳይ</button>
-<button class="smallbtn secondary" onclick="editRecord(${Number(r.id)})">አስተካክል</button>
-<button class="smallbtn danger" onclick="deleteRecord(${Number(r.id)})">አጥፋ</button>
-</td></tr>`;
-}).join("")}</tbody></table></div>`;
+area.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Record Number</th><th>የታካሚ ስም</th><th>አገልግሎት</th><th>ዋና መረጃ</th><th>ቀን</th><th>ድርጊት</th></tr></thead><tbody>${records.slice().reverse().map(r=>`<tr><td><strong>${escapeHTML(recordNumber(r))}</strong></td><td>${escapeHTML(patientName(r))}</td><td>${escapeHTML(r.service||"")}</td><td>${escapeHTML(Object.values(r.data||{})[0]||"-")}</td><td>${escapeHTML(recordDate(r))}</td><td><button class="smallbtn secondary" onclick="viewRecord(${Number(r.id)})">አሳይ</button><button class="smallbtn secondary" onclick="editRecord(${Number(r.id)})">አስተካክል</button><button class="smallbtn danger" onclick="deleteRecord(${Number(r.id)})">አጥፋ</button></td></tr>`).join("")}</tbody></table></div>`;
 }
 
 function viewRecord(id){
 const r=loadRecords().find(x=>x.id===id);
 if(!r)return alert("መዝገቡ አልተገኘም።");
-
-const lines=Object.entries(r.data||{}).map(([k,v])=>k+" : "+v).join("\n");
-alert("መዝገብ ቁጥር፦ "+recordNumber(r)+
-"\nየታካሚ ስም፦ "+patientName(r)+
-"\nአገልግሎት፦ "+r.service+
-"\nቀን፦ "+recordDate(r)+"\n\n"+lines);
+alert("መዝገብ ቁጥር፦ "+recordNumber(r)+"\nየታካሚ ስም፦ "+patientName(r)+"\nአገልግሎት፦ "+r.service+"\nቀን፦ "+recordDate(r)+"\n\n"+Object.entries(r.data||{}).map(([k,v])=>k+" : "+v).join("\n"));
 }
 
 function editRecord(id){
@@ -583,15 +551,12 @@ openService(r.serviceId,r);
 
 function deleteRecord(id){
 if(!confirm("ይህን አንድ መዝገብ ለማጥፋት እርግጠኛ ነዎት?"))return;
-
 try{
-const r=loadRecords().filter(x=>x.id!==id);
-saveAll(r);
+saveAll(loadRecords().filter(x=>x.id!==id));
 updateStats();
 filterRecords();
-}catch(e){
-alert("መዝገቡን ማጥፋት አልተቻለም።");
-}
+loadImmunizationDay();
+}catch(e){alert("መዝገቡን ማጥፋት አልተቻለም።")}
 }
 
 function clearSearch(){
@@ -601,6 +566,96 @@ $("searchService").value="";
 $("searchDate").value="";
 filterRecords();
 }
+
+/* የክትባት ብዙ መዝገቦች ማስተካከያ */
+
+function renderBulkInput(record,field){
+const[key,label,type,required,opts]=field;
+const val=record.data?.[label]??"";
+const id=`bulk_${record.id}_${key}`;
+const safe=escapeHTML(val);
+let control="";
+if(type==="textarea"){
+control=`<textarea id="${id}" ${required?"required":""}>${safe}</textarea>`;
+}else if(type==="select"){
+control=`<select id="${id}" ${required?"required":""}><option value="">ይምረጡ</option>${opts.map(o=>`<option value="${escapeHTML(o)}" ${val===o?"selected":""}>${escapeHTML(o)}</option>`).join("")}</select>`;
+}else{
+control=`<input id="${id}" type="${type}" value="${safe}" ${required?"required":""} ${type==="number"?'min="0"':''}>`;
+}
+return `<div class="field ${type==="textarea"?"full":""}"><label for="${id}">${label}${required?" *":""}</label>${control}</div>`;
+}
+
+function loadImmunizationDay(){
+const date=$("immunizationBulkDate").value;
+const area=$("immunizationBulkArea");
+$("bulkMessage").innerHTML="";
+if(!date){
+area.innerHTML='<p class="notice">እባክዎ የክትባት ቀን ይምረጡ።</p>';
+return;
+}
+const rows=loadRecords().filter(r=>r.serviceId==="immunization"&&recordDate(r)===date);
+if(!rows.length){
+area.innerHTML='<p class="hint">በዚህ ቀን የተመዘገበ የክትባት መረጃ የለም።</p>';
+updateBulkSelectionCount();
+return;
+}
+area.innerHTML=rows.map(r=>`<div class="bulk-card" data-bulk-record="${Number(r.id)}"><div class="bulk-head"><input type="checkbox" class="bulk-select" id="bulkSelect_${Number(r.id)}" onchange="updateBulkSelectionCount()"><label for="bulkSelect_${Number(r.id)}"><strong>${escapeHTML(patientName(r))}</strong> · ${escapeHTML(recordNumber(r))} · ${escapeHTML(r.data?.["የክትባት ዓይነት"]||"")}</label></div><div class="bulk-fields">${fields.immunization.map(f=>renderBulkInput(r,f)).join("")}</div></div>`).join("");
+updateBulkSelectionCount();
+}
+
+function selectAllBulk(flag){
+document.querySelectorAll(".bulk-select").forEach(c=>c.checked=flag);
+updateBulkSelectionCount();
+}
+
+function updateBulkSelectionCount(){
+const n=document.querySelectorAll(".bulk-select:checked").length;
+$("bulkSelectionCount").textContent="የተመረጡ፦ "+n;
+}
+
+function saveSelectedImmunization(){
+const selected=[...document.querySelectorAll(".bulk-select:checked")].map(c=>Number(c.id.replace("bulkSelect_","")));
+if(!selected.length){
+alert("እባክዎ ቢያንስ አንድ መዝገብ ይምረጡ።");
+return;
+}
+const updated=loadRecords();
+const requiredMissing=[];
+for(const id of selected){
+for(const f of fields.immunization){
+if(f[3]){
+const el=$(`bulk_${id}_${f[0]}`);
+if(!el||!el.value.trim())requiredMissing.push((el?.previousElementSibling?.textContent||f[1])+" ("+id+")");
+}
+}
+}
+if(requiredMissing.length){
+alert("አስፈላጊ መረጃ ያልተሞላ አለ። እባክዎ የተመረጡትን ቅጾች ያሟሉ።");
+return;
+}
+try{
+for(const id of selected){
+const index=updated.findIndex(r=>r.id===id&&r.serviceId==="immunization");
+if(index<0)continue;
+const data={...updated[index].data};
+for(const f of fields.immunization){
+const el=$(`bulk_${id}_${f[0]}`);
+if(el)data[f[1]]=el.value.trim();
+}
+updated[index]={...updated[index],data,updatedAt:new Date().toISOString()};
+}
+saveAll(updated);
+$("bulkMessage").innerHTML=`<div class="success">✓ ${selected.length} የክትባት መዝገቦች በአንድ ጊዜ ተስተካክለዋል።</div>`;
+updateStats();
+filterRecords();
+loadImmunizationDay();
+}catch(e){
+console.error(e);
+$("bulkMessage").innerHTML='<div class="notice">መረጃዎቹን ማስቀመጥ አልተቻለም። Backup አድርገው ይሞክሩ።</div>';
+}
+}
+
+/* ሪፖርት */
 
 function showReports(){
 $("home").classList.add("hidden");
@@ -612,85 +667,51 @@ makeReport();
 }
 
 function makeReport(){
-const period=$("reportPeriod").value;
-const selected=$("reportDate").value;
+const period=$("reportPeriod").value,selected=$("reportDate").value;
 if(!selected)return;
-
 const d=new Date(selected+"T12:00:00");
 let start,end;
-
-if(period==="day"){
-start=selected;end=selected;
-}else if(period==="week"){
-const day=(d.getDay()+6)%7;
+if(period==="day")start=end=selected;
+else if(period==="week"){
 const s=new Date(d);
-s.setDate(d.getDate()-day);
+s.setDate(d.getDate()-((d.getDay()+6)%7));
 const e=new Date(s);
 e.setDate(s.getDate()+6);
 start=localDate(s);end=localDate(e);
 }else if(period==="month"){
 start=selected.slice(0,7)+"-01";
-const e=new Date(d.getFullYear(),d.getMonth()+1,0);
-end=localDate(e);
+end=localDate(new Date(d.getFullYear(),d.getMonth()+1,0));
 }else{
 start=d.getFullYear()+"-01-01";
 end=d.getFullYear()+"-12-31";
 }
-
-const r=loadRecords().filter(x=>{
-const rd=recordDate(x);
-return rd>=start&&rd<=end;
-});
-
+const r=loadRecords().filter(x=>recordDate(x)>=start&&recordDate(x)<=end);
 const counts={};
 services.forEach(s=>counts[s.id]=0);
-r.forEach(x=>{
-if(counts[x.serviceId]!==undefined)counts[x.serviceId]++;
-});
-
-$("reportArea").innerHTML=`
-<div class="success">የሪፖርት ጊዜ፦ ${start} እስከ ${end}<br>ጠቅላላ ምዝገባ፦ <b>${r.length}</b></div>
-<div class="table-wrap"><table>
-<thead><tr><th>አገልግሎት</th><th>የምዝገባ ብዛት</th></tr></thead>
-<tbody>${services.map(s=>`<tr><td>${s.name}</td><td>${counts[s.id]}</td></tr>`).join("")}</tbody>
-</table></div>`;
+r.forEach(x=>{if(counts[x.serviceId]!==undefined)counts[x.serviceId]++});
+$("reportArea").innerHTML=`<div class="success">የሪፖርት ጊዜ፦ ${start} እስከ ${end}<br>ጠቅላላ ምዝገባ፦ <b>${r.length}</b></div><div class="table-wrap"><table><thead><tr><th>አገልግሎት</th><th>የምዝገባ ብዛት</th></tr></thead><tbody>${services.map(s=>`<tr><td>${s.name}</td><td>${counts[s.id]}</td></tr>`).join("")}</tbody></table></div>`;
 }
+
+/* Backup እና CSV */
 
 function backupJSON(){
 try{
 const records=loadRecords();
-const backup={
-system:"DHPEW",
-version:"2.2",
-createdAt:new Date().toISOString(),
-recordCount:records.length,
-records:records
-};
-
-const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});
-downloadBlob(blob,"DHPEW-backup-"+localDate(new Date())+".json");
+const backup={system:"DHPEW",version:"2.3",createdAt:new Date().toISOString(),recordCount:records.length,records};
+downloadBlob(new Blob([JSON.stringify(backup,null,2)],{type:"application/json"}),"DHPEW-backup-"+localDate(new Date())+".json");
 alert("JSON Backup ተዘጋጅቷል። ፋይሉን በስልክዎ ያስቀምጡ።");
-}catch(e){
-alert("Backup ማውረድ አልተቻለም።");
-}
+}catch(e){alert("Backup ማውረድ አልተቻለም።")}
 }
 
 function restoreJSON(){
 const file=$("backupFile").files[0];
-if(!file){
-alert("እባክዎ JSON Backup ይምረጡ።");
-return;
-}
-
+if(!file)return alert("እባክዎ JSON Backup ይምረጡ።");
 const reader=new FileReader();
-reader.onload=function(){
+reader.onload=()=>{
 try{
-const obj=JSON.parse(reader.result);
-const incoming=Array.isArray(obj)?obj:obj.records;
-if(!Array.isArray(incoming))throw new Error("Invalid backup");
-
-if(!confirm("Backup ውስጥ "+incoming.length+" መዝገቦች አሉ። አሁን ያሉትን መዝገቦች በBackup ውስጥ ባሉት ለመተካት እርግጠኛ ነዎት? በፊት ያለውን Backup ያውርዱ።"))return;
-
+const obj=JSON.parse(reader.result),incoming=Array.isArray(obj)?obj:obj.records;
+if(!Array.isArray(incoming))throw Error("Invalid backup");
+if(!confirm("Backup ውስጥ "+incoming.length+" መዝገቦች አሉ። አሁን ያሉትን መዝገቦች በBackup ውስጥ ባሉት ለመተካት እርግጠኛ ነዎት? በፊት Backup ያውርዱ።"))return;
 saveAll(incoming);
 updateStats();
 $("backupMessage").innerHTML='<div class="success">✓ Backup ተመልሷል። '+incoming.length+' መዝገቦች ተጫኑ።</div>';
@@ -699,7 +720,6 @@ console.error(e);
 $("backupMessage").innerHTML='<div class="notice">የBackup ፋይሉ ትክክለኛ አይደለም ወይም መመለስ አልተቻለም።</div>';
 }
 };
-
 reader.onerror=()=>alert("ፋይሉን ማንበብ አልተቻለም።");
 reader.readAsText(file);
 }
@@ -707,31 +727,19 @@ reader.readAsText(file);
 function exportCSV(){
 const r=loadRecords();
 if(!r.length)return alert("ለማውረድ መረጃ የለም።");
-
 const keys=[...new Set(r.flatMap(x=>Object.keys(x.data||{})))];
 const rows=[
 ["Record Number","Patient Name","Service","Date","Saved At",...keys],
-...r.map(x=>[
-recordNumber(x),patientName(x),x.service,recordDate(x),x.savedAt,
-...keys.map(k=>x.data?.[k]||"")
-])
+...r.map(x=>[recordNumber(x),patientName(x),x.service,recordDate(x),x.savedAt,...keys.map(k=>x.data?.[k]||"")])
 ];
-
-const csv="\uFEFF"+rows.map(row=>
-row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")
-).join("\n");
-
+const csv="\uFEFF"+rows.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\n");
 downloadBlob(new Blob([csv],{type:"text/csv;charset=utf-8"}),"DHPEW-report.csv");
 }
 
 function downloadBlob(blob,name){
-const url=URL.createObjectURL(blob);
-const a=document.createElement("a");
-a.href=url;
-a.download=name;
-document.body.appendChild(a);
-a.click();
-a.remove();
+const url=URL.createObjectURL(blob),a=document.createElement("a");
+a.href=url;a.download=name;
+document.body.appendChild(a);a.click();a.remove();
 setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
 
@@ -741,20 +749,14 @@ const test="dhpew_test_"+Date.now();
 localStorage.setItem(test,"OK");
 const result=localStorage.getItem(test);
 localStorage.removeItem(test);
-const count=loadRecords().length;
-
-$("storageStatus").innerHTML=result==="OK"
-?"✓ ማከማቻው እየሰራ ነው።<br>የተቀመጡ መዝገቦች፦ "+count
-:"⚠ የማከማቻ ችግር አለ።";
+$("storageStatus").innerHTML=result==="OK"?"✓ ማከማቻው እየሰራ ነው።<br>የተቀመጡ መዝገቦች፦ "+loadRecords().length:"⚠ የማከማቻ ችግር አለ።";
 }catch(e){
 $("storageStatus").innerHTML="⚠ የማከማቻ ስህተት። ቦታው ሞልቶ ሊሆን ይችላል።";
 }
 }
 
 function net(){
-$("networkStatus").textContent=navigator.onLine
-?"Internet available · Local save"
-:"Offline · Local save";
+$("networkStatus").textContent=navigator.onLine?"Internet available · Local save":"Offline · Local save";
 }
 
 function goHome(){
@@ -769,7 +771,6 @@ updateStats();
 
 window.addEventListener("online",net);
 window.addEventListener("offline",net);
-
 drawCards();
 updateStats();
 net();
