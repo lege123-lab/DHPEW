@@ -1,0 +1,8 @@
+{
+  "appId": "org.dhpew.health",
+  "appName": "DHPEW",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
