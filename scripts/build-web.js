@@ -1,3 +1,4 @@
+
 const fs = require("fs");
 const path = require("path");
 
@@ -12,37 +13,55 @@ const excluded = new Set([
   ".github"
 ]);
 
+// Remove old www folder
 if (fs.existsSync(webDir)) {
-  fs.rmSync(webDir, { recursive: true, force: true });
+  fs.rmSync(webDir, {
+    recursive: true,
+    force: true
+  });
 }
 
-fs.mkdirSync(webDir, { recursive: true });
-
-fs.cpSync(root, webDir, {
-  recursive: true,
-  filter: (source) => {
-    const relative = path.relative(root, source);
-
-    if (!relative) return true;
-
-    const parts = relative.split(path.sep);
-
-    if (parts.some((part) => excluded.has(part))) {
-      return false;
-    }
-
-    return ![
-      "package.json",
-      "package-lock.json",
-      "capacitor.config.json"
-    ].includes(path.basename(source));
-  }
+// Create a clean www folder
+fs.mkdirSync(webDir, {
+  recursive: true
 });
 
+// Copy project files without copying www into itself
+function copyProject(source, destination) {
+  const entries = fs.readdirSync(source, {
+    withFileTypes: true
+  });
+
+  for (const entry of entries) {
+    if (excluded.has(entry.name)) {
+      continue;
+    }
+
+    const sourcePath = path.join(source, entry.name);
+    const destinationPath = path.join(destination, entry.name);
+
+    if (entry.isDirectory()) {
+      fs.mkdirSync(destinationPath, {
+        recursive: true
+      });
+
+      copyProject(sourcePath, destinationPath);
+    } else if (entry.isFile()) {
+      fs.copyFileSync(sourcePath, destinationPath);
+    }
+  }
+}
+
+copyProject(root, webDir);
+
+// Verify the main application file
 const indexFile = path.join(webDir, "index.html");
 
 if (!fs.existsSync(indexFile)) {
-  throw new Error("index.html was not found in the project root.");
+  throw new Error(
+    "ERROR: index.html was not found in the project root."
+  );
 }
 
 console.log("DHPEW web files prepared successfully.");
+console.log("Web directory: " + webDir);
